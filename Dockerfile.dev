@@ -1,0 +1,42 @@
+FROM python:3.6.1-slim
+
+MAINTAINER Rémy Greinhofer <remy.greinhofer@gmail.com>
+
+# Create the directory containing the code.
+RUN mkdir -p /code /requirements
+WORKDIR /code
+
+# Define environment variables.
+ENV PYTHONUNBUFFERED 1
+
+# Update the package list.
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+
+    # Install git.
+    git \
+
+    # Install postgresql client.
+    postgresql-client-9.4 \
+
+    # Cleaning up.
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy the requirements files.
+COPY requirements/* /requirements/
+
+# Upgrade pip.
+RUN pip install --upgrade pip==9.0.1
+
+# Install the pip packages.
+RUN pip install -q -r /requirements/local.txt
+
+# Copy django entry point.
+COPY docker/api/django-entrypoint.sh /
+
+# Create unprivileged user for celery.
+RUN adduser --disabled-password --gecos '' celery
+
+# Copy celery worker entry point.
+COPY docker/api/celery-entrypoint.sh /
