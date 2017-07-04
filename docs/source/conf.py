@@ -24,7 +24,13 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.coverage', 'sphinx.ext.viewcode', ]
+extensions = [
+    'sphinxjp.themes.basicstrap',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
+]
 
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
 # text edit cycles.
@@ -58,6 +64,14 @@ pygments_style = 'sphinx'
 # html_theme_path = ["."]
 # html_theme = '_theme'
 # html_static_path = ['static']
+# html_theme_options = {'show_related': True, 'fixed_sidebar': True, 'page_width': '80%', 'sidebar_width': '20%'}
+html_theme = 'basicstrap'
+html_theme_options = {
+    'sidebar_span': 2,  # 1(min) - 12(max)
+}
+# html_sidebars = {
+#     '**': ['localtoc.html', 'sourcelink.html', 'searchbox.html'],
+# }
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = '%sdoc' % project
@@ -65,7 +79,9 @@ htmlhelp_basename = '%sdoc' % project
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
-latex_documents = [('index', '%s.tex' % project, u'%s Documentation' % project, u'OpenStack Foundation', 'manual'), ]
+# latex_documents = [
+# ('index', '%s.tex' % project, u'%s Documentation' % project, u'OpenStack Foundation', 'manual'),
+# ]
 
 # Example configuration for intersphinx: refer to the Python standard library.
 #intersphinx_mapping = {'http://docs.python.org/': None}
