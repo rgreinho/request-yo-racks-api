@@ -1,0 +1,298 @@
+{
+  "html_attributions": [],
+  "results": [
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.3182126,
+          "lng": -97.7233275
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.3195615802915,
+            "lng": -97.72197851970849
+          },
+          "southwest": {
+            "lat": 30.3168636197085,
+            "lng": -97.72467648029149
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+      "id": "7c579f176bbd3fa1e51cfbc585d3b1f351870c03",
+      "name": "100-214 W N Loop Blvd",
+      "place_id": "ChIJScAAmmvKRIYRn42comEgS20",
+      "reference": "CmRbAAAAXBaHWrscvII954Hr3VRud0QnhQxPuj-gdGCtzyn5dgcu7Oi1lSypTXnXAFCPtmT80MjJSuf_FmBfi8HCPvT-5Cs16mriANxI_EMtAyBYnSip8PqAakaVhJS2b_w_WTrAEhC3N_JNzv_dzx6E0RAJw8ISGhQUjYmCItPBkl9XK8kpzoC0fobtPw",
+      "scope": "GOOGLE",
+      "types": [
+        "route"
+      ],
+      "vicinity": "Austin"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.31865599999999,
+          "lng": -97.72445499999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.3200402302915,
+            "lng": -97.7230839197085
+          },
+          "southwest": {
+            "lat": 30.3173422697085,
+            "lng": -97.7257818802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+      "id": "b88b7bf483a71d44ecffc9d2b1257484817ef552",
+      "name": "Epoch Coffee",
+      "opening_hours": {
+        "open_now": true,
+        "weekday_text": []
+      },
+      "photos": [
+        {
+          "height": 2988,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/102211095935205035779/photos\">Tina Mailhot-Roberge</a>"
+          ],
+          "photo_reference": "CmRaAAAAMMcNyzvx3bqt-NF8j8dZZzu3g9fd3N_8m0RhQZl78jsOcWro1IoTDFtvV_Dq7JIqDmNa6nGSzJaOYZsQ3egbK3ggc-BayRQgBndfw0DWZ7miMbV8WGM3uaBAacxt1nbgEhAFIkRFKGbG6140NPYGOAH7GhRNi8t28trK1C7oBpkNvEWCRs_NwQ",
+          "width": 5312
+        }
+      ],
+      "place_id": "ChIJG-gJw2vKRIYROWi2uwOp8QE",
+      "price_level": 1,
+      "rating": 4.3,
+      "reference": "CmRRAAAAviDaVPk-4vJg130As7Do8qgIMLnw0cJimWbIcdRmiSYRvVQ9AdeYkleV4bV0QWq77aAds9LOmBxYlSRZwuqA3jnrDfBou518rAJtR3LvRfAGxq200MX3zNJ4INytgnfTEhAmsdsAPts5nuJE8TGNgxJlGhT99cFKimlVHpjVC_RAy2y81o-S6w",
+      "scope": "GOOGLE",
+      "types": [
+        "cafe",
+        "food",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "221 West North Loop Boulevard, Austin"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.3184664,
+          "lng": -97.72458209999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.3198153802915,
+            "lng": -97.72323311970848
+          },
+          "southwest": {
+            "lat": 30.3171174197085,
+            "lng": -97.72593108029149
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
+      "id": "c2adaa423a83b256b3d58e4a8bc8f0efc93b969c",
+      "name": "Blue Velvet",
+      "opening_hours": {
+        "open_now": true,
+        "weekday_text": []
+      },
+      "photos": [
+        {
+          "height": 2448,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/100679816977868969276/photos\">Juan Hernandez</a>"
+          ],
+          "photo_reference": "CmRaAAAA2fFAE82VqY4cIGOiNTZ3CH2-J-PU1f1Kdpwp218yhToLif7P169oJitbNMn24ekmVVqV5FVhp02oWPKCZleOMmve3s8Ri4GKYpI2S4wgtfbGqS9_TlJGmVesogdFSUMSEhCOPxlTY7a4jpZiiwswjRObGhQuV6bmoF0bHGLmKwMCo_fh-VOjvQ",
+          "width": 2448
+        }
+      ],
+      "place_id": "ChIJBzPI6WvKRIYRO059hPJZndU",
+      "rating": 4.3,
+      "reference": "CmRSAAAAPuFVmgVRz_zF61SnV-Ym6UV-Yl96l8GLTzDl_FaRb6Ip4566Gf_o3yE_t2k-qD3wilbJvRcwexKdqder9Y7vRN3hduKpVzO1xkW23leR2liy5w8TO4OzILBqKQazPI49EhAYh51C-TBsTL21MCUcPan_GhRiRs2SR0P2AXYYxYIk9wcPBoThqw",
+      "scope": "GOOGLE",
+      "types": [
+        "clothing_store",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "217 W North Loop, Austin"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.3183103,
+          "lng": -97.7244417
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.3198247302915,
+            "lng": -97.72298736970849
+          },
+          "southwest": {
+            "lat": 30.3171267697085,
+            "lng": -97.72568533029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
+      "id": "dc611b182b8d640e0774860722ad2ce5c8096210",
+      "name": "Breakaway Records",
+      "opening_hours": {
+        "open_now": true,
+        "weekday_text": []
+      },
+      "photos": [
+        {
+          "height": 2322,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/100052153467308822326/photos\">Mark Blankenship</a>"
+          ],
+          "photo_reference": "CmRaAAAA4S3Y29wbz0h240woC8wS_Ne1awiVWRMDjvvunOyxAfSVHcjVmX5PIb2KZZQCoSy925jNK07DjF4cFKdgCFHyhWTKaOJtiohJLW2xcK8Rj-Am0AcO3JMMVRjpqr3l7pE2EhA07vY8hJKiLhhee4_sJ2zDGhTAHxdM1b44wk3M38GON_B9bRC7Yg",
+          "width": 4128
+        }
+      ],
+      "place_id": "ChIJl97swWvKRIYR04M3oxYPG-Y",
+      "price_level": 1,
+      "rating": 4.5,
+      "reference": "CmRSAAAAphyDZqpLcvvIbA0pVmAmLy0oL1dEYPlFfF3pGl1CFfILlaMHT3zU7T_uK7usbKKOr9kWI2FzXLu15jyk14HCK_r1HbC1XL7cv_Cr40kY1hwHmX8ciRNYf1cTl-e9JPLgEhA5P2wr-tUYuSg7q2JzEtD-GhTSdmWoiZ81njRgY4Y_7uSj47r2cw",
+      "scope": "GOOGLE",
+      "types": [
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "211 West North Loop Boulevard, Austin"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.318357,
+          "lng": -97.72452700000001
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.3198690302915,
+            "lng": -97.7230742197085
+          },
+          "southwest": {
+            "lat": 30.3171710697085,
+            "lng": -97.7257721802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+      "id": "0204a1d1ae62813ccca8ef96c1fd2cce729b1703",
+      "name": "The Center Spot",
+      "opening_hours": {
+        "open_now": false,
+        "weekday_text": []
+      },
+      "photos": [
+        {
+          "height": 648,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/115258788602230114671/photos\">The Center Spot</a>"
+          ],
+          "photo_reference": "CmRaAAAAnFniG5hvyNzL5-yRS7ySYWQed5OJG4qvgLsGr6dXBg7Yxt-3Y9e9zQtgnOgfxNowlAHByZQrYi9cskJMYn-uYmEEAG2kDVYFYDUmVwzmVVdCcx88rrxemr14fiFfC51mEhDxcFvuvRM7ZV34IjO-NH6VGhSsIA7GJFF5nIPxQ8fbF7PYwlDJTg",
+          "width": 652
+        }
+      ],
+      "place_id": "ChIJb-iQwWvKRIYREcuAEGb-Brw",
+      "rating": 2,
+      "reference": "CmRSAAAAKadOAE5sRXqAdq3Ulxlq3GgReHUTmTF5hadRaFpQOOi97FS4FVJ79vvsls2gnegZvee-ZEMXYEoN3btCOmxiSK9gZZ9bpMc1rFzld9nAG-Lj8KiSOM8RPx0GiXIj_zTfEhCWErA0houqdsphXAUP46BjGhQnRAUoakBqFM1p6CCQtK0YtBE-Ug",
+      "scope": "GOOGLE",
+      "types": [
+        "gym",
+        "health",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "213 West North Loop Boulevard, Austin"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.3187126,
+          "lng": -97.72482219999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.3201007802915,
+            "lng": -97.72355536970849
+          },
+          "southwest": {
+            "lat": 30.3174028197085,
+            "lng": -97.7262533302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+      "id": "38fdbcb7cf0792caa7fb97d6fad4d0a7b22c910a",
+      "name": "Waller Creek",
+      "photos": [
+        {
+          "height": 4048,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/105117792274492423685/photos\">Kurt Kaiser</a>"
+          ],
+          "photo_reference": "CmRaAAAAnFCZXBLwXsTID5ZZVRdB_a-kov4SOFn71hI7L1gYqYvWylYZiByEk7edeFAgjjgVrwUl2IghJ9iwyUzWZdlX4TKAGV4Kdh-azz4t52WJ9U92ZnNEw0KrABx-GIWzvImfEhD35BPOgo2tdpFoNrNOn2gUGhRLdFF_ixEgF_bQSuJ0DNY_oKYZ-w",
+          "width": 3036
+        }
+      ],
+      "place_id": "ChIJzSjl3GvKRIYRk3hfNfLuAL4",
+      "reference": "CmRSAAAATZEknqgj7O91lVLpuL7zDeWC24I1v9ozkksZNexLHCACa95pBGCv9L5Pm9CaWeUqcncCVoj-aZVl4tyg3yCVkOaNNQw5gMXejL72i0LBJAawIzXL3hrHlOfPW1rKqMZEEhDS731_A8JiXiMM0upvksA4GhRvcudjBfReJtIQOK7oEkjluzYF6Q",
+      "scope": "GOOGLE",
+      "types": [
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Leralynn Street, Austin"
+    },
+    {
+      "geometry": {
+        "location": {
+          "lat": 30.267153,
+          "lng": -97.7430608
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 30.5168629,
+            "lng": -97.5684199
+          },
+          "southwest": {
+            "lat": 30.0986589,
+            "lng": -97.9383829
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+      "id": "c5153b48ff062dcbd5e6bbb77bcaa3afb7458147",
+      "name": "Austin",
+      "photos": [
+        {
+          "height": 2988,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/106033611212459738387/photos\">Kenneth Benton</a>"
+          ],
+          "photo_reference": "CmRaAAAADrXhEN7q1vfu9nY1VAZ2hEPAqGczfzGSqHjpf257TgBtmi1IcZoL4nzZJFnyqShs3u0oJG8r_ELnO2GZZ2t4I5Gm9Ft7uzY3TaSO_wzEexyO0gwnMGFie0jWSoJsdH9HEhA1up1Wjqii4ZvI2xSSKqgZGhQbfN27L87UAWAQ9jj_vsqwIKi4DQ",
+          "width": 5312
+        }
+      ],
+      "place_id": "ChIJLwPMoJm1RIYRetVp1EtGm10",
+      "reference": "CmRbAAAAV0sL70dk069yMPTg0JyJofRXWIFbCUnK75INOT3YLsZ1LfwvGypcUPBI3Q1BVPoq13HndAH7DBdMatWr3BsKVLjJnsa6N-5wqbNCrbvUjuzAmMEO2PwOgaIVBxwp7AzEEhAIOPnV1NWgiF9uWzB_RJZ9GhRSBMgQvD7-Xt5im6uVhOxgP7p7NA",
+      "scope": "GOOGLE",
+      "types": [
+        "locality",
+        "political"
+      ],
+      "vicinity": "Austin"
+    }
+  ],
+  "status": "OK"
+}

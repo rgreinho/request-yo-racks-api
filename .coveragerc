@@ -2,3 +2,6 @@
 omit =
     *__init__.py
     api/apps/api/tests/*
+    api/settings/*
+    api/urls.py
+    api/wsgi.py
