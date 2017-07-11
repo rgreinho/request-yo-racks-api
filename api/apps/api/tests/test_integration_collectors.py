@@ -1,9 +1,8 @@
 import json
 import os
 
-from api.apps.api.collectors.collector import CollectorClient
-# from collectors.collector import CollectorClient
-from api.apps.api.collectors.collector import GoogleCollector
+from api.apps.api.collectors import CollectorClient
+from api.apps.api.collectors import GoogleCollector
 
 
 def integration_test_yelp():
@@ -64,4 +63,5 @@ def integration_test_google_place_details_00():
 
 
 if __name__ == '__main__':
-    integration_test_google_place_details_00()
+    integration_test_google_search_00()
+    # integration_test_google_place_details_00()

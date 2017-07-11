@@ -1,7 +1,10 @@
-api.egg-info
+*.pid
+.DS_Store
 .cache
-__pycache__/
-.tox
-venv/
-docs/build/
 .coverage
+.tox
+__pycache__/
+api.egg-info
+celerybeat-schedule
+docs/build/
+venv/
