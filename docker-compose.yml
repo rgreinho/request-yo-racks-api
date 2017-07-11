@@ -34,6 +34,9 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@ryr-api-db:5432/postgres
       REDIS_URL: redis://ryr-api-redis:6379
+      DJANGO_SETTINGS_MODULE: api.settings.local
+      RYR_COLLECTOR_GOOGLE_PLACES_API_KEY:
+      RYR_API_API_OPTS: "--reload --timeout 1800"
     env_file:
       - docker/env-files/celery.env
     depends_on:

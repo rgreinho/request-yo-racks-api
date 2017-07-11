@@ -5,15 +5,15 @@ from faker import Faker
 import pytest
 import requests
 
-from api.apps.api.collectors.collector import CollectorClient
-from api.apps.api.collectors.collector import GoogleCollector
-from api.apps.api.collectors.collector import YelpCollector
+from api.apps.api.collectors import CollectorClient
+from api.apps.api.collectors import GoogleCollector
+from api.apps.api.collectors import YelpCollector
 
 
 @pytest.fixture()
 def google_collector():
     """
-    Returns a GoogleCollector.
+    Return a GoogleCollector.
 
     A valid API key for the Google Maps client starts with "AIza".
     """
@@ -22,8 +22,8 @@ def google_collector():
     return c
 
 
-class TestCollectorClient():
-    """Tests for the generic collector client."""
+class TestCollectorClient:
+    """Implement Tests for the generic collector client."""
     fake = Faker()
 
     def test_authenticate_00(self):
@@ -51,7 +51,7 @@ class TestCollectorClient():
 
 
 class TestGoogleCollector():
-    """Tests for the Google collector."""
+    """Implement tests for the Google collector."""
     fake = Faker()
 
     def test_search_places_00(self, mocker, google_collector):
@@ -74,7 +74,7 @@ class TestGoogleCollector():
 
 
 class TestYelpCollector():
-    """Tests for the Yelp collector."""
+    """Implement tests for the Yelp collector."""
     fake = Faker()
 
     def test_search_places_00(self, mocker):
@@ -90,12 +90,14 @@ class TestYelpCollector():
         """Ensure retrieve_place_details returns a dictionary."""
         yelp = YelpCollector()
 
-        mocker.patch.object(requests.Response, 'json', return_value=YELP_DETAILS_RESPONSE_JSON)
+        mocker.patch.object(requests.Response, 'json', return_value=YELP_DETAILS_RESPONSE)
         details_results = yelp.retrieve_place_details(self.fake.pystr())
 
         assert type(details_results) is dict
 
 
+# Google Maps Place Search API Response example.
+# https://developers.google.com/places/web-service/search#PlaceSearchResponses
 GOOGLE_MAPS_SEARCH_RESPONSE_JSON = """
 {
    "html_attributions" : [],
@@ -217,6 +219,8 @@ GOOGLE_MAPS_SEARCH_RESPONSE_JSON = """
 """
 GOOGLE_MAPS_SEARCH_RESPONSE = json.loads(GOOGLE_MAPS_SEARCH_RESPONSE_JSON)
 
+# Google Maps Place Details API Response example.
+# https://developers.google.com/places/web-service/details#PlaceDetailsResponses
 GOOGLE_MAPS_DETAILS_RESPONSE_JSON = """
 {
    "html_attributions" : [],
@@ -312,6 +316,7 @@ GOOGLE_MAPS_DETAILS_RESPONSE_JSON = """
 """
 GOOGLE_MAPS_DETAILS_RESPONSE = json.loads(GOOGLE_MAPS_DETAILS_RESPONSE_JSON)
 
+# Yelp Search API Response example.
 YELP_SEARCH_RESPONSE_JSON = """
 {
   "total": 8228,
@@ -359,6 +364,7 @@ YELP_SEARCH_RESPONSE_JSON = """
 """
 YELP_SEARCH_RESPONSE = json.loads(YELP_SEARCH_RESPONSE_JSON)
 
+# Yelp Business API Response example.
 YELP_DETAILS_RESPONSE_JSON = """
 {
   "id": "gary-danko-san-francisco",

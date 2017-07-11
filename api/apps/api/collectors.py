@@ -299,12 +299,7 @@ class CollectorClient:
         :returns: A dictionnary containing the detailed information of the place matching the `place_id`.
         :rtype: dict
         """
-        self.collector.retrieve_place_details(place_id)
-        details = {
-            'name': self.collector.business_name,
-            'address': self.collector.business_address,
-            'phone': self.collector.business_phone_number,
-        }
+        details = self.collector.retrieve_place_details(place_id)
         return details
 
     def retrieve_place_details(self, address, terms=None):

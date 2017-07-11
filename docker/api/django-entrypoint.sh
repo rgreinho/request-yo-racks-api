@@ -15,4 +15,4 @@ done
 python manage.py migrate
 
 # Start development server on public ip interface, on port 8000.
-exec gunicorn --reload -b 0.0.0.0:${RYR_API_API_PORT} api.wsgi
+exec gunicorn ${RYR_API_API_OPTS} -b 0.0.0.0:${RYR_API_API_PORT} api.wsgi

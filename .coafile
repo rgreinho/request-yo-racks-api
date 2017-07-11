@@ -23,4 +23,5 @@ pylint_rcfile = .pylintrc
 # invalid-name                  : too complicated to configure sanely.
 # logging-format-interpolation  : does not make any sense.
 # no-self-use                   : wrong detection (i.e. pytest class tests).
-pylint_disable = broad-except,invalid-name,logging-format-interpolation,no-self-use
+# import-error                  : reports too many false postives.
+pylint_disable = broad-except,invalid-name,logging-format-interpolation,no-self-use,import-error

@@ -29,6 +29,6 @@ or
 
   make format
 
-.. _`Issue`: https://github.com/Rémy Greinhofer/api/issues
-.. _`Pull Request`: https://github.com/Rémy Greinhofer/api/pulls
+.. _`Issue`: https://github.com/rgreinho/request-yo-racks-api/issues
+.. _`Pull Request`: https://github.com/rgreinho/request-yo-racks-api/pulls
 .. _`YAPF`: https://github.com/google/yapf

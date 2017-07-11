@@ -30,7 +30,7 @@ help: # Display help
 
 ci-coala: ## Run the static analyzers
 	@docker pull $(DOCKER_IMAGE_COALA)
-	@docker run -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMAGE_COALA) coala --ci
+	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMAGE_COALA) coala --ci
 
 ci-docs: ## Ensure the documentation builds
 	$(DOCKER_COMPOSE_RUN_FULL) tox -e docs
@@ -44,6 +44,9 @@ clean: ## Remove unwanted files in project (!DESTRUCTIVE!)
 django-dbup: # Ensure Django DB is up and runnig
 	@docker-compose up -d $(DOCKER_DB_CONTAINER);
 	$(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_DJANGO_OPTS) $(DOCKER_DB_CONTAINER) bash -c "until psql -h \"$(DOCKER_DB_CONTAINER)\" -U \"postgres\" -c '\l' >/dev/null 2>&1; do sleep 1; done"
+
+django-debug: django-dbup ## Run Django in a way allowing the use of PDB
+	$(DOCKER_COMPOSE_RUN_CMD) --rm --service-ports $(DOCKER_COMPOSE_RUN_SVC)
 
 django-migrate: django-dbup ## Run the Django migrations
 	$(DOCKER_COMPOSE_RUN_DJANGO_FULL) migrate
@@ -84,8 +87,8 @@ venv: venv/bin/activate ## Setup local venv
 
 venv/bin/activate: requirements/local.txt
 	test -d venv || virtualenv -p $(PYTHON_EXE) venv
-	. venv/bin/activate; pip install -U pip; pip install -r requirements/local.txt
-	. venv/bin/activate; python setup.py develop
+	. venv/bin/activate && pip install -U pip && pip install -r requirements/local.txt
+	. venv/bin/activate && python setup.py develop
 
 wheel: ## Build a wheel package
 	$(DOCKER_COMPOSE_RUN_FULL) python setup.py bdist_wheel

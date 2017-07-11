@@ -33,7 +33,9 @@ DJANGO_APPS = [
 ]
 
 # 3rd party apps.
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    'rest_framework',
+]
 
 # Project applications.
 PROJECT_APPS = [
@@ -154,3 +156,12 @@ if os.environ.get('REDIS_URL'):
             }
         }
     }
+
+# Django REST Framework.
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
+}
