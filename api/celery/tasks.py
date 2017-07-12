@@ -7,6 +7,7 @@ from api.celery.celery import app
 
 logger = get_task_logger(__name__)
 
+
 @app.task
 def add(x, y):
     return x + y

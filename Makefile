@@ -7,7 +7,7 @@ TOPDIR = $(shell git rev-parse --show-toplevel)
 DOCKER_NETWORK = ryr
 DOCKER_ORG = ryr
 DOCKER_SVC = django
-DOCKER_IMAGE_COALA = coala/base:pre
+DOCKER_IMAGE_COALA = coala/base:0.11
 
 # Docker compose run generic parameters.
 DOCKER_COMPOSE_RUN_CMD = docker-compose run
@@ -68,7 +68,7 @@ docker-network: ## Create a Loannister bridge network
 	fi
 
 docs: ## Build documentation
-	$(DOCKER_COMPOSE_RUN_FULL) python setup.py build_sphinx --builder=html
+	$(DOCKER_COMPOSE_RUN_FULL) sphinx-build -b html -d docs/build/doctrees docs/source/ docs/build/html
 
 format: ## Format the codebase using YAPF
 	$(DOCKER_COMPOSE_RUN_FULL) yapf -r -i .
