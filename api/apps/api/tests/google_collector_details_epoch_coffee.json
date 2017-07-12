@@ -1,0 +1,269 @@
+{
+  "html_attributions": [],
+  "result": {
+    "address_components": [
+      {
+        "long_name": "221",
+        "short_name": "221",
+        "types": [
+          "street_number"
+        ]
+      },
+      {
+        "long_name": "West North Loop Boulevard",
+        "short_name": "W N Loop Blvd",
+        "types": [
+          "route"
+        ]
+      },
+      {
+        "long_name": "North Loop",
+        "short_name": "North Loop",
+        "types": [
+          "neighborhood",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Austin",
+        "short_name": "Austin",
+        "types": [
+          "locality",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Travis County",
+        "short_name": "Travis County",
+        "types": [
+          "administrative_area_level_2",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Texas",
+        "short_name": "TX",
+        "types": [
+          "administrative_area_level_1",
+          "political"
+        ]
+      },
+      {
+        "long_name": "United States",
+        "short_name": "US",
+        "types": [
+          "country",
+          "political"
+        ]
+      },
+      {
+        "long_name": "78751",
+        "short_name": "78751",
+        "types": [
+          "postal_code"
+        ]
+      },
+      {
+        "long_name": "1919",
+        "short_name": "1919",
+        "types": [
+          "postal_code_suffix"
+        ]
+      }
+    ],
+    "adr_address": "<span class=\"street-address\">221 W N Loop Blvd</span>, <span class=\"locality\">Austin</span>, <span class=\"region\">TX</span> <span class=\"postal-code\">78751-1919</span>, <span class=\"country-name\">USA</span>",
+    "formatted_address": "221 W N Loop Blvd, Austin, TX 78751, USA",
+    "formatted_phone_number": "(512) 454-3762",
+    "geometry": {
+      "location": {
+        "lat": 30.31865599999999,
+        "lng": -97.72445499999999
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 30.3200402302915,
+          "lng": -97.7230839197085
+        },
+        "southwest": {
+          "lat": 30.3173422697085,
+          "lng": -97.7257818802915
+        }
+      }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+    "id": "b88b7bf483a71d44ecffc9d2b1257484817ef552",
+    "international_phone_number": "+1 512-454-3762",
+    "name": "Epoch Coffee",
+    "opening_hours": {
+      "open_now": true,
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "time": "0000"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: Open 24 hours",
+        "Tuesday: Open 24 hours",
+        "Wednesday: Open 24 hours",
+        "Thursday: Open 24 hours",
+        "Friday: Open 24 hours",
+        "Saturday: Open 24 hours",
+        "Sunday: Open 24 hours"
+      ]
+    },
+    "photos": [
+      {
+        "height": 2988,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/102211095935205035779/photos\">Tina Mailhot-Roberge</a>"
+        ],
+        "photo_reference": "CmRaAAAAgPHU5r_qU0RorpaVD6BslbUeW4cgRxVq0sRZ2xJxUZ_z62dkc-UsmdRCUiN8FX8BXWuwHtZSyvIKXIZE90p6lWbPARiDzAD3Qt67TZ5yeUh6V4H2fLkHzFezxc4ltDQ2EhD14vQcqkBPDPvjxakaA49DGhRNxPFi_zWH-locj7tDSQ0pmXF5SA",
+        "width": 5312
+      },
+      {
+        "height": 2448,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/100679816977868969276/photos\">Juan Hernandez</a>"
+        ],
+        "photo_reference": "CmRaAAAACa0zdM2460ZE4vNlBksYQR-Kpc8MRm7QVAm-E9tZeERArdiBn69fQmk3FJlAeP7kEEsCbu8nLq4nptxAuavtocW8np0o28IwPdTWREigOYhU_ty6qIHKo8ESh4i1YD-kEhBNzl9ptX-QFi5RreRN1znGGhQUvCSEHElSeGdJAQBS4wDXQXMDpQ",
+        "width": 2448
+      },
+      {
+        "height": 2448,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/103434952980662145106/photos\">Evan Smith</a>"
+        ],
+        "photo_reference": "CmRaAAAAGxIDbwn62pppFut9iMbZv6ozPYdBuu7VK5-cF4i_x_1lKG132nOLnmnYX9Fh-74j2AvF4UKIFwjSaWtxxDXxb5yrQEs-xRshkZhr285sVSPVAQxh7G5kSgt5Awa2-5QeEhC1H5TpUdQku6BSFidqDxQpGhQ34Av6KsjRINZg4nMfDnvIwbbD-A",
+        "width": 3264
+      },
+      {
+        "height": 2988,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/104004342273663458344/photos\">rudresh ghosh</a>"
+        ],
+        "photo_reference": "CmRaAAAA2uihCvkW2rxv82ifxcGSdJXDnsUBLBTY1EwD3mT-0bBN02Z2L1n0sEA9hgqR-DXZgSEoMlvE0ZY1kUm8YwI13zwcXYyR4ba1UGE1MUAKe3oSZWKssfqhQnieOD4B-PpQEhDV08ewGACmhV1rUMN7-TCKGhQN1d70lqQmkqf_Mp_oZ29d25Qr9A",
+        "width": 3984
+      },
+      {
+        "height": 4032,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/102194112870317026302/photos\">David Sullivan</a>"
+        ],
+        "photo_reference": "CmRaAAAAItQzxfqg3Tje9bqWR02yfMn33dteDCd4glfeWyiKDnAiPhQ50SEipoxSnxZ93MuuIflkE594edR1QvFGkcZOjaAMUAtD3E_1WlkbZG9o_kIHQqVyKBEwFUdVP9fQbxJkEhB8dI51O-OdtKBO567t-sREGhSYWBugRHheh2WKS9PpzjqMTiRF6A",
+        "width": 3024
+      },
+      {
+        "height": 4160,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/108557829720217429428/photos\">Jason Archip</a>"
+        ],
+        "photo_reference": "CmRaAAAArLxU8fN39DbFrdMdnI_Bnqq3wdLZZFUEO8oJpZlF5u1WL_0VitKmZV0sSLl_2h4XG6eobEYuEAUYpsXvhQIxrNUoz4DRh3kyq5fuf0Ty3xj7iVbwD_VxSalcmaLDwCwEEhBBClzFaMJANwhVueH0vjIdGhQux6L2U5qat7o6NRYR05ffmSixXg",
+        "width": 3120
+      },
+      {
+        "height": 2448,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/101348433249562602498/photos\">George Edward Purdy</a>"
+        ],
+        "photo_reference": "CmRaAAAAO_y8cEgJszmbD1LIOmTV-rorXnPfdbNMR7JSnXuVycs7q1hRhEyfBRZPoZlD8mDAfsSnpCAiH3qrtSethZpC-FoWiZrm6dQnbqqifdieyPAyMlVTxTeiPV_0-6eZa9q5EhAaVQicjB7ddD0cv3rq3CF9GhQzQR83U2-z3QTGN1FjIP78ilAqfg",
+        "width": 3264
+      },
+      {
+        "height": 2745,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/104004342273663458344/photos\">rudresh ghosh</a>"
+        ],
+        "photo_reference": "CmRaAAAAqP_OXuXtPLCh_Y1a5I79TgIBknji4Dgo44vMNk0aWSLmo-0GC5wx7rKO60PPJY29hlQ_nW5jj7_bzOMW-VKBNS3dRYuMUvQKFguTTuVkOyPZUotT-h7HDfxulPh5FON0EhD5rf8Wm9xnQkAB_wgfDaxUGhTqkRbTdL9ioVKQmUo1npW85onZqg",
+        "width": 4991
+      },
+      {
+        "height": 2330,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/106434660189412741154/photos\">Faraz Mohammed</a>"
+        ],
+        "photo_reference": "CmRaAAAAMGmJKg_kO3t4pi6XGJ85p_2SBCPpIsQ5R8Xjs39mUavMwbdnWsqHSfi9DFmXSFZT6ZJv-MRADxb9bouDqLMXVA3MSLbqN50P3DmBEPhILJi4OkJMt80tqRy92RLtoaJTEhBTAI1tjq17V8TIkpMXEdzwGhQWk7K80YLfEloaDbpwmW7sREog0g",
+        "width": 4000
+      },
+      {
+        "height": 2340,
+        "html_attributions": [
+          "<a href=\"https://maps.google.com/maps/contrib/107041784119947985247/photos\">Thomas Herben</a>"
+        ],
+        "photo_reference": "CmRaAAAAU5kmtgub7W_CNAxHh77bG0mBpKaB6uOyNouW7qV9aqHS9iHlTXuLi1bxoWbNKBCGLe8ZhfOwG1wk_at2uGKtnBYvtP2cx-Gf3xGZfROmP9dS9fjhDamKDKjyi4_ValsWEhDrwhQwb8pLf2wGkBGBpRgFGhR3Br5owoVSTPk1pX0avQxQaI6Vgw",
+        "width": 4160
+      }
+    ],
+    "place_id": "ChIJG-gJw2vKRIYROWi2uwOp8QE",
+    "price_level": 1,
+    "rating": 4.3,
+    "reference": "CmRRAAAAW6oE3ir2dbm8EAy8qw6D7PWgotW18AjpCqbM6aYTGuNqH_nDeA1548AIokKrE8QIKhQNfW-DwQ7eIKAyk6_HC9-_zntRF9AigbGEN_0IBGXCHrqWCDsnV3S75SOCMY79EhBZQKEbcSV2brMjm9AsgEz-GhQwHJFIuIO2LwpWY_DXESxeBaEoxg",
+    "reviews": [
+      {
+        "author_name": "Joe Samuel",
+        "author_url": "https://www.google.com/maps/contrib/109833394328804067433/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh5.googleusercontent.com/-du1NpJC4P-8/AAAAAAAAAAI/AAAAAAAAADY/_CF2DKq_8Hw/s128-c0x00000000-cc-rp-mo-ba3/photo.jpg",
+        "rating": 5,
+        "relative_time_description": "2 weeks ago",
+        "text": "Great coffee shop! Several rooms create a lot of space without losing the intimate feel of a neighborhood coffee shop.  I had just a regular drip coffee and it was strong and rich.  Espresso beverages and tea are also offered, as well as a selection of baked goods, and probably other items that I didn't notice as well.  The large outdoor porch is dog friendly.",
+        "time": 1498138714
+      },
+      {
+        "author_name": "Cynthia",
+        "author_url": "https://www.google.com/maps/contrib/116266055563014847336/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh5.googleusercontent.com/-Adb4qV63m3o/AAAAAAAAAAI/AAAAAAAACkg/7W4MrAuzTv8/s128-c0x00000000-cc-rp-mo-ba4/photo.jpg",
+        "rating": 5,
+        "relative_time_description": "in the last week",
+        "text": "This is a pretty good place to come. You have to go on off hours (based on the Google crowd graph) to get parking though. My first drink order was made wrong, and wasn't the tastiest (but was presented beautifully), but the staff was so exceptionally kind when I came in that I don't want to knock a star off. I have not found Austinites to be friendly, so it was a really pleasant surprise here that the employees were so nice. The inside is pretty nice and open, and the wifi is excellent. Good for people watching too - if you imagine the Austin resident stereotype, that is exactly what you will see here.\nUpdate: had the iced coffee and it was amazing! I am typically not a coffee fan (caffeine though) but this is great.",
+        "time": 1499526629
+      },
+      {
+        "author_name": "Kurt Kaiser",
+        "author_url": "https://www.google.com/maps/contrib/105117792274492423685/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh6.googleusercontent.com/-KO8Ua6xW61A/AAAAAAAAAAI/AAAAAAABBXQ/IiUgCqMmUxg/s128-c0x00000000-cc-rp-mo-ba6/photo.jpg",
+        "rating": 5,
+        "relative_time_description": "2 weeks ago",
+        "text": "I love coffee. All coffee. Cheap coffee, fancy coffee. French press and 7 Eleven. Epoch is not about the coffee. It is about the coffee house. Their coffee is fine, I usually get a black eye, but don't go for the coffee. Don't go for the food -- excluding the bagel dogs, I often kick my morning off with them. But really you go for more than acceptable coffee and over-salted snacks. \n\nGo for the Austin. Epoch is often what Austin is. Youngish, energetic/caffeinated, high speed internet, listening to music that you haven't heard of and reading books that seem deep, or are required by UT courses. \n\nEpoch has flaws -- but go get some caffeine, take a book that makes you look interesting and people watch your afternoon away.",
+        "time": 1498024260
+      },
+      {
+        "author_name": "Kimberly Boatman",
+        "author_url": "https://www.google.com/maps/contrib/113210106320008825137/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh6.googleusercontent.com/-OZLxYUDzTfY/AAAAAAAAAAI/AAAAAAAAWEY/rt5wQixrAY4/s128-c0x00000000-cc-rp-mo-ba2/photo.jpg",
+        "rating": 5,
+        "relative_time_description": "4 weeks ago",
+        "text": "Live down the street and always enjoy early morning visits here. It can get busier in the evenings. The Half Mojo is my favorite. Not too sweet. Bagels and pastries are always yummy as well. ",
+        "time": 1497106661
+      },
+      {
+        "author_name": "Lisa Matt",
+        "author_url": "https://www.google.com/maps/contrib/114022749889545885841/reviews",
+        "language": "en",
+        "profile_photo_url": "https://lh5.googleusercontent.com/-2Q1xtWX1RUM/AAAAAAAAAAI/AAAAAAAAFLQ/JHAYxT7Hg3w/s128-c0x00000000-cc-rp-mo-ba2/photo.jpg",
+        "rating": 5,
+        "relative_time_description": "2 months ago",
+        "text": "Best sound track ever. Gets crowded during after school times and for late night meeting up, but I still usually find a good spot to sit and get things done or just have a good conversation with a friend. Love epoch.",
+        "time": 1493749818
+      }
+    ],
+    "scope": "GOOGLE",
+    "types": [
+      "cafe",
+      "food",
+      "store",
+      "point_of_interest",
+      "establishment"
+    ],
+    "url": "https://maps.google.com/?cid=140078896924485689",
+    "utc_offset": -300,
+    "vicinity": "221 West North Loop Boulevard, Austin",
+    "website": "http://www.epochcoffee.com/"
+  },
+  "status": "OK"
+}

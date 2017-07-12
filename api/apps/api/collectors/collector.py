@@ -139,8 +139,8 @@ class YelpCollector(AbstractRestCollector):
         :param str address: business address
         :param str terms: Optional. Search term (e.g. "food", "restaurants"). If term isn’t included we
             search everything. The term keyword also accepts business names such as "Starbucks".
-        :returns: The ID of the first match.
-        :rtype: str
+        :returns: A dictionnary containing the results of the research.
+        :rtype: dict
         """
         # Prepare the route.
         SEARCH_ROUTE = 'v3/businesses/search'
@@ -152,12 +152,10 @@ class YelpCollector(AbstractRestCollector):
             querystring['terms'] = terms
 
         # Query the server.
-        response = requests.request("GET", url, headers=self.headers, params=querystring)
+        response = requests.get(url, headers=self.headers, params=querystring)
         response_json = response.json()
 
-        # Extract the ID of the first result.
-        first_result = response_json['businesses'][0]
-        return first_result.get('id')
+        return response_json
 
     def retrieve_place_details(self, place_id):
         """
@@ -166,19 +164,23 @@ class YelpCollector(AbstractRestCollector):
         This function populates the `name`, `address`, and `phone` properties of this instance.
 
         :param str place_id: the ID of a place
+        :returns: A dictionnary containing the detailed information of the place matching the `place_id`.
+        :rtype: dict
         """
         # Prepare the route.
         DETAILS_ROUTE = 'v3/businesses/{id}'.format(id=place_id)
         url = urllib.parse.urljoin(YelpCollector.BASE_URL, DETAILS_ROUTE)
 
         # Query the server.
-        response = requests.request("GET", url, headers=self.headers)
+        response = requests.get(url, headers=self.headers)
         response_json = response.json()
 
         # Populate the properties.
         self.name = response_json.get('name', '')
         self.address = ' '.join(response_json.get('location', {}).get('display_address', ''))
         self.phone = response_json.get('display_phone', '')
+
+        return response_json
 
 
 class GoogleCollector(AbstractClientCollector):
@@ -203,11 +205,11 @@ class GoogleCollector(AbstractClientCollector):
         :param str address: business address
         :param str terms: Optional. Search term (e.g. "food", "restaurants"). If term isn’t included we
             search everything. The term keyword also accepts business names such as "Starbucks".
-        :returns: The ID of the first match.
-        :rtype: str
+        :returns: A dictionnary containing the results of the research.
+        :rtype: dict
         """
         results = self.places_client.places_nearby(address, radius=50)
-        return results['results'][0]['place_id']
+        return results
 
     def retrieve_place_details(self, place_id):
         """
@@ -216,6 +218,8 @@ class GoogleCollector(AbstractClientCollector):
         This function populates the `name`, `address`, and `phone` properties of this instance.
 
         :param str place_id: the ID of a place
+        :returns: A dictionnary containing the detailed information of the place matching the `place_id`.
+        :rtype: dict
         """
         result = self.places_client.place(place_id)
 
@@ -223,6 +227,8 @@ class GoogleCollector(AbstractClientCollector):
         self.name = result.get('result', {}).get('name', '')
         self.address = result.get('result', {}).get('formatted_address', '')
         self.phone = result.get('result', {}).get('phone', '')
+
+        return result
 
 
 class CollectorClient:
@@ -277,8 +283,8 @@ class CollectorClient:
         :param str address: business address
         :param str terms: Optional. Search term (e.g. "food", "restaurants"). If term isn’t included we
             search everything. The term keyword also accepts business names such as "Starbucks".
-        :returns: The ID of the first match.
-        :rtype: str
+        :returns: A dictionnary containing the results of the research.
+        :rtype: dict
         """
         return self.collector.search_place(address, terms=terms)
 
@@ -290,6 +296,8 @@ class CollectorClient:
         place_id.
 
         :param str place_id: the ID of a place
+        :returns: A dictionnary containing the detailed information of the place matching the `place_id`.
+        :rtype: dict
         """
         self.collector.retrieve_place_details(place_id)
         details = {
