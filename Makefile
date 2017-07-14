@@ -1,5 +1,4 @@
 # General.
-PYTHON_EXE = python3
 SHELL = /bin/bash
 TOPDIR = $(shell git rev-parse --show-toplevel)
 
@@ -86,7 +85,7 @@ setup: docker-network ## Setup the full environment (default)
 venv: venv/bin/activate ## Setup local venv
 
 venv/bin/activate: requirements/local.txt
-	test -d venv || virtualenv -p $(PYTHON_EXE) venv
+	test -d venv || python3 -m venv venv
 	. venv/bin/activate && pip install -U pip && pip install -r requirements/local.txt
 	. venv/bin/activate && python setup.py develop
 
