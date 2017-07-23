@@ -19,9 +19,11 @@ pylint_cli_options = --jobs=8
 pylint_rcfile = .pylintrc
 
 # Explain why a check is disabled.
-# broad-except                  : it does not always make the code clearer to be utlra specific.
+# broad-except                  : it does not always make the code clearer to be ultra specific.
 # invalid-name                  : too complicated to configure sanely.
 # logging-format-interpolation  : does not make any sense.
 # no-self-use                   : wrong detection (i.e. pytest class tests).
-# import-error                  : reports too many false postives.
-pylint_disable = broad-except,invalid-name,logging-format-interpolation,no-self-use,import-error
+# import-error                  : reports too many false positives.
+# W0613 (Unused argument)       : does not work well for Django
+# W0622 (Redefining built-in)   : does not work well for Django
+pylint_disable = broad-except,invalid-name,logging-format-interpolation,no-self-use,import-error, W0613, W0622

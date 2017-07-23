@@ -4,3 +4,4 @@ from .base import *  # noqa
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
+CORS_ORIGIN_ALLOW_ALL = DEBUG

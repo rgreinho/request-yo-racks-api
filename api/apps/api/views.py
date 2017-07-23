@@ -24,13 +24,15 @@ class PlaceList(APIView):
         # Define data.
         places_api_key = os.environ['RYR_COLLECTOR_GOOGLE_PLACES_API_KEY']
         epoch_latlong = (30.3186037, -97.72454019999999)
+        latlong = epoch_latlong
 
         # Prepare client.
         client = CollectorClient('google', api_key=places_api_key)
         client.authenticate()
 
         # Retrieve search results.
-        search_results = client.search_place(epoch_latlong)
+        # latlong = self.request.query_params.get('latlong', None)
+        search_results = client.search_place(latlong)
         return Response(search_results)
 
 

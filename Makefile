@@ -75,6 +75,7 @@ clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 
 django-debug: django-envvars ## Run Django in a way allowing the use of PDB
 	source $(HOME)/.config/ryr/ryr-env.sh \
+		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
 		&& $(LOCAL_RUN_CMD) $(DJANGO_MANAGE_CMD) runserver 0.0.0.0:8000
 
 django-envvars: ## Setup Django environment variables for this project
