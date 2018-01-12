@@ -1,15 +1,12 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 
 # Define variables.
 : ${RYR_API_API_PORT:=8000}
 
-# Ensure the DB is up and running before starting Django.
->&2 echo -n "Waiting for DB to be up and running."
-until psql -h "ryr-api-db" -U "postgres" -c '\l'; do
-  sleep 1
-  >&2 echo -n .
-done
+# Debug.
+echo "PWD is ${PWD}"
+ls -lh
 
 # Migrate db, so we have the latest db schema.
 python manage.py migrate

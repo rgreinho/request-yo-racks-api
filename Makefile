@@ -1,11 +1,12 @@
 # General.
 SHELL = /bin/bash
 TOPDIR = $(shell git rev-parse --show-toplevel)
+TAG ?= $(shell git describe)
 
 # Docker.
 DOCKER_NETWORK = ryr
-DOCKER_ORG = ryr
-DOCKER_SVC = django
+DOCKER_ORG = requestyoracks
+DOCKER_SVC = api
 DOCKER_IMAGE_COALA = coala/base:0.11
 
 # Docker compose run generic parameters.
@@ -27,7 +28,9 @@ help: # Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
-ci-coala: ## Run the static analyzers
+ci-all: ci-linters ci-tests ci-docs ## Run all CI targets at once
+
+ci-linters: ## Run the static analyzers
 	@docker pull $(DOCKER_IMAGE_COALA)
 	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMAGE_COALA) coala --ci
 
@@ -38,7 +41,10 @@ ci-tests: ## Run the unit tests
 	$(DOCKER_COMPOSE_RUN_FULL) tox
 
 clean: ## Remove unwanted files in project (!DESTRUCTIVE!)
-	cd $(TOPDIR); git clean -ffdx
+	cd $(TOPDIR) && git clean -ffdx
+
+clean-minikube: ## Remove minikube deployment (!DESTRUCTIVE!)
+	helm delete --purge api
 
 django-dbup: # Ensure Django DB is up and runnig
 	@docker-compose up -d $(DOCKER_DB_CONTAINER);
@@ -58,6 +64,20 @@ django-shell: django-dbup ## Run the Django Shell
 
 django-superuser: django-dbup ## Create the Django super user
 	$(DOCKER_COMPOSE_RUN_DJANGO_FULL) createsuperuser
+
+deploy-minikube:
+	cd charts \
+	&& helm upgrade api ryr/api \
+	  --install \
+		-f values.minikube.yaml \
+	  --set image.tag=$(TAG) \
+		--set persistence.hostPath.path=$(PWD)
+
+dist: ## Package the application
+	@echo "Not implemented yet."
+
+docker-build: ## Build the docker image
+	@docker build -t $(DOCKER_ORG)/$(DOCKER_SVC):$(TAG) -f Dockerfile.dev .
 
 docker-clean: ## Stop and remove containers, volumes, networks and images for this project (!DESTRUCTIVE!)
 	@docker-compose down --rmi local -v
@@ -84,10 +104,9 @@ setup: docker-network ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
 
-venv/bin/activate: requirements/local.txt
+venv/bin/activate: requirements.txt
 	test -d venv || python3 -m venv venv
-	. venv/bin/activate && pip install -U pip && pip install -r requirements/local.txt
-	. venv/bin/activate && python setup.py develop
+	. venv/bin/activate && pip install -U pip==9.0.1 setuptools==38.4.0 && pip install -e .[docs,local,testing]
 
 wheel: ## Build a wheel package
 	$(DOCKER_COMPOSE_RUN_FULL) python setup.py bdist_wheel
