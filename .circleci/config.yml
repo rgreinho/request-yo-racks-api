@@ -16,7 +16,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - deps-{{ checksum "requirements/local.txt" }}
+          - deps-{{ checksum "requirements.txt" }}
           # fallback to using the latest cache if no exact match is found
           - deps-
 
@@ -27,7 +27,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: deps-{{ checksum "requirements/local.txt" }}
+          key: deps-{{ checksum "requirements.txt" }}
 
       - run:
           name: run unit tests

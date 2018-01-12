@@ -1,9 +1,0 @@
--r _base.txt
--r _docs.txt
--r _tests.txt
-
-bpython==0.16
-q==2.6
-tox==2.7.0
-wheel==0.29.0
-yapf==0.16.2
