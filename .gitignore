@@ -6,6 +6,8 @@
 .tox
 __pycache__/
 api.egg-info
+build/
 celerybeat-schedule
+dist/
 docs/build/
 venv/

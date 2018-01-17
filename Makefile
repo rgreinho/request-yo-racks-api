@@ -1,24 +1,46 @@
+# Project configuration.
+PROJECT_NAME = api
+
+# Makefile parameters.
+RUN ?= docker
+SUFFIX ?= .dev
+TAG ?= $(shell git describe)$(SUFFIX)
+
 # General.
 SHELL = /bin/bash
 TOPDIR = $(shell git rev-parse --show-toplevel)
-TAG ?= $(shell git describe)
 
 # Docker.
-DOCKER_NETWORK = ryr
 DOCKER_ORG = requestyoracks
-DOCKER_SVC = api
+REPOSITORY = $(DOCKER_ORG)/$(PROJECT_NAME)
+DOCKER_IMG = $(REPOSITORY):$(TAG)
+DOCKERFILE = Dockerfile$(SUFFIX)
 DOCKER_IMAGE_COALA = coala/base:0.11
 
+# Chart.
+CHART_REPO = ryr
+CHART_NAME = $(CHART_REPO)/$(PROJECT_NAME)
+
+# Docker run command.
+DOCKER_RUN_CMD = docker run -t -v=$$(pwd):/code --rm $(DOCKER_IMG)
+
+# Determine whether running the command in a container or locally.
+ifeq ($(RUN),docker)
+  RUN_CMD = $(DOCKER_RUN_CMD)
+else
+  RUN_CMD = source venv/bin/activate &&
+endif
+
 # Docker compose run generic parameters.
-DOCKER_COMPOSE_RUN_CMD = docker-compose run
-DOCKER_COMPOSE_RUN_OPTS = --no-deps --rm
-DOCKER_COMPOSE_RUN_SVC = ryr-api-django
-DOCKER_COMPOSE_RUN_FULL = $(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_OPTS) $(DOCKER_COMPOSE_RUN_SVC)
-DOCKER_DB_CONTAINER = ryr-api-db
+# DOCKER_COMPOSE_RUN_CMD = docker-compose run
+# DOCKER_COMPOSE_RUN_OPTS = --no-deps --rm
+# DOCKER_COMPOSE_RUN_SVC = ryr-api-django
+# DOCKER_COMPOSE_RUN_FULL = $(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_OPTS) $(DOCKER_COMPOSE_RUN_SVC)
+# DOCKER_DB_CONTAINER = ryr-api-db
 
 # Docker compose run Django parameters.
-DOCKER_COMPOSE_RUN_DJANGO_MANAGE_CMD = python manage.py
-DOCKER_COMPOSE_RUN_DJANGO_FULL = $(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_DJANGO_OPTS) $(DOCKER_COMPOSE_RUN_SVC) $(DOCKER_COMPOSE_RUN_DJANGO_MANAGE_CMD)
+# DOCKER_COMPOSE_RUN_DJANGO_MANAGE_CMD = python manage.py
+# DOCKER_COMPOSE_RUN_DJANGO_FULL = $(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_DJANGO_OPTS) $(DOCKER_COMPOSE_RUN_SVC) $(DOCKER_COMPOSE_RUN_DJANGO_MANAGE_CMD)
 
 default: setup
 
@@ -35,16 +57,21 @@ ci-linters: ## Run the static analyzers
 	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMAGE_COALA) coala --ci
 
 ci-docs: ## Ensure the documentation builds
-	$(DOCKER_COMPOSE_RUN_FULL) tox -e docs
+	$(RUN_CMD) tox -e docs
 
 ci-tests: ## Run the unit tests
-	$(DOCKER_COMPOSE_RUN_FULL) tox
+	$(RUN_CMD) tox
 
 clean: ## Remove unwanted files in project (!DESTRUCTIVE!)
-	cd $(TOPDIR) && git clean -ffdx
+	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
-clean-minikube: ## Remove minikube deployment (!DESTRUCTIVE!)
-	helm delete --purge api
+clean-all: clean clean-docker clean-minikube ## Clean everything (!DESTRUCTIVE!)
+
+clean-docker: ## Remove all docker artifacts for this project (!DESTRUCTIVE!)
+	@docker image rm -f $(shell docker image ls --filter reference='$(REPOSITORY)' -q)
+
+clean-minikube: ## Remove all the Kubernetes objects associated to this project
+	@helm delete --purge $(PROJECT_NAME)
 
 django-dbup: # Ensure Django DB is up and runnig
 	@docker-compose up -d $(DOCKER_DB_CONTAINER);
@@ -67,48 +94,37 @@ django-superuser: django-dbup ## Create the Django super user
 
 deploy-minikube:
 	cd charts \
-	&& helm upgrade api ryr/api \
+	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
 	  --install \
 		-f values.minikube.yaml \
 	  --set image.tag=$(TAG) \
 		--set persistence.hostPath.path=$(PWD)
 
-dist: ## Package the application
-	@echo "Not implemented yet."
+dist: wheel ## Package the application
 
 docker-build: ## Build the docker image
-	@docker build -t $(DOCKER_ORG)/$(DOCKER_SVC):$(TAG) -f Dockerfile.dev .
-
-docker-clean: ## Stop and remove containers, volumes, networks and images for this project (!DESTRUCTIVE!)
-	@docker-compose down --rmi local -v
-	@docker network prune -f
-
-docker-network: ## Create a Loannister bridge network
-	FOUND=$$(docker network ls -f name=^$(DOCKER_NETWORK)$$ -q); \
-	if [ -z "$$FOUND" ]; then \
-		docker network create --driver bridge $(DOCKER_NETWORK); \
-	fi
+	@docker build -t $(DOCKER_IMG) -f $(DOCKERFILE) .
 
 docs: ## Build documentation
-	$(DOCKER_COMPOSE_RUN_FULL) sphinx-build -b html -d docs/build/doctrees docs/source/ docs/build/html
+	$(RUN_CMD) tox -e docs
 
 format: ## Format the codebase using YAPF
-	$(DOCKER_COMPOSE_RUN_FULL) yapf -r -i .
+	$(RUN_CMD) tox -e format
 
 format-check: ## Check the code formatting using YAPF
-	$(DOCKER_COMPOSE_RUN_FULL) exit `yapf -d -r . | wc -l | tr -s ' '
+	$(RUN_CMD) tox -e format-check
 
-setup: docker-network ## Setup the full environment (default)
-	@docker-compose build
-	@docker-compose pull
+setup: docker-build ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
 
 venv/bin/activate: requirements.txt
-	test -d venv || python3 -m venv venv
-	. venv/bin/activate && pip install -U pip==9.0.1 setuptools==38.4.0 && pip install -e .[docs,local,testing]
+	test -d venv || virtualenv --no-setuptools --no-wheel -p python3 venv || python3 -m venv venv
+	. venv/bin/activate \
+		&& pip install -U pip==9.0.1 setuptools==38.4.0 \
+		&& pip install -e .[docs,local,testing]
 
 wheel: ## Build a wheel package
-	$(DOCKER_COMPOSE_RUN_FULL) python setup.py bdist_wheel
+	$(RUN_CMD) tox -e wheel
 
-.PHONY: ci-coala ci-docs ci-tests clean django-migrate django-make-migrations django-shell django-superuser docker-clean docker-network docs format format-check setup wheel
+.PHONY: ci-all ci-docs ci-tests ci-linters clean-all clean clean-docker clean-minikube dist django-migrate django-make-migrations django-shell django-superuser docker-build docs format format-check setup wheel

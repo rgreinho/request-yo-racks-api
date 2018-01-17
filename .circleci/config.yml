@@ -14,15 +14,15 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - deps-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - deps-
+      # - restore_cache:
+      #     keys:
+      #       - deps-{{ checksum "requirements.txt" }}
+      #       # fallback to using the latest cache if no exact match is found
+      #       - deps-
 
       - run:
           name: install dependencies
-          command: make venv
+          command: RUN=ci make venv
 
       - save_cache:
           paths:
@@ -30,10 +30,12 @@ jobs:
           key: deps-{{ checksum "requirements.txt" }}
 
       - run:
+          name: check the formatting
+          command: RUN=ci make format-check
+
+      - run:
           name: run unit tests
-          command: |
-            . venv/bin/activate
-            tox
+          command: RUN=ci make ci-tests
 
       - store_artifacts:
           path: test-reports
@@ -41,6 +43,23 @@ jobs:
 
       - run:
           name: run doc tests
-          command: |
-            . venv/bin/activate
-            tox -e docs
+          command: RUN=ci make ci-docs
+
+  coala:
+    docker:
+      - image: coala/base:0.11
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: Run coala
+          command: coala --ci
+
+workflows:
+  version: 2
+  gates:
+    jobs:
+      - coala
+      - build
