@@ -13,12 +13,8 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
-      # - restore_cache:
-      #     keys:
-      #       - deps-{{ checksum "requirements.txt" }}
-      #       # fallback to using the latest cache if no exact match is found
-      #       - deps-
+      - restore_cache:
+          keys: deps-{{ .Branch }}--{{ checksum "requirements.txt" }}
 
       - run:
           name: install dependencies
@@ -27,7 +23,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: deps-{{ checksum "requirements.txt" }}
+          key: deps-{{ .Branch }}--{{ checksum "requirements.txt" }}
 
       - run:
           name: check the formatting
