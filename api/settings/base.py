@@ -61,7 +61,10 @@ ROOT_URLCONF = 'api.urls'
 
 # Define the site admins.
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (('Rémy Greinhofer', 'remy.greinhofer@gmail.com'), ('Caren V Garcia', 'carenvaleria90@gmail.com'), )
+ADMINS = (
+    ('Rémy Greinhofer', 'remy.greinhofer@gmail.com'),
+    ('Caren V Garcia', 'carenvaleria90@gmail.com'),
+)
 
 # Define site managers.
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
