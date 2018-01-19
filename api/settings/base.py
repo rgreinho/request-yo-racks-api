@@ -135,12 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Database configuration.
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {'default': {}}
 
 # Update database configuration with ${DATABASE_URL}.
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -166,5 +161,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.IsAdminUser',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }

@@ -32,7 +32,8 @@ else
 endif
 
 # Docker run Django parameters.
-RUN_DJANGO_MANAGE_CMD = $(RUN_CMD) python manage.py
+DJANGO_MANAGE_CMD = python manage.py
+RUN_DJANGO_MANAGE_CMD = $(RUN_CMD) $(DJANGO_MANAGE_CMD)
 
 default: setup
 
@@ -76,18 +77,18 @@ django-debug: ## Run Django in a way allowing the use of PDB
 	# $(RUN_DJANGO_MANAGE_CMD) --rm --service-ports $(DOCKER_COMPOSE_RUN_SVC)
 
 django-migrate: ## Run the Django migrations
-	@echo "Needs to be reimplemented."
-	# $(RUN_DJANGO_MANAGE_CMD) migrate
+	@bash tools/kubernetes-django-manage.sh migrate
 
 django-make-migrations: ## Prepare the Django migrations
-	$(RUN_DJANGO_MANAGE_CMD) makemigrations
+	@bash tools/kubernetes-django-manage.sh makemigrations
 
 django-shell: ## Run the Django Shell
-	$(RUN_DJANGO_MANAGE_CMD) shell
+	@bash tools/kubernetes-django-manage.sh shell
 
 django-superuser: ## Create the Django super user
-	@echo "Needs to be reimplemented."
-	# $(RUN_DJANGO_MANAGE_CMD) createsuperuser
+	@bash tools/kubernetes-django-manage.sh createsuperuser \
+		--username admin\
+		--email admin@requestyoracks.com
 
 deploy-minikube: ## Deploy the API on Minikube
 	cd charts \
@@ -105,7 +106,7 @@ docs: ## Build documentation
 format: ## Format the codebase using YAPF
 	$(RUN_CMD) tox -e format
 
-setup: docker-build ## Setup the full environment (default)
+setup: build-docker ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
 
@@ -118,4 +119,4 @@ venv/bin/activate: requirements.txt
 wheel: # Build a wheel package
 	$(RUN_CMD) tox -e wheel
 
-.PHONY: ci ci-format ci-linters ci-docs ci-tests clean clean-docker clean-minikube clean-repo dist django-migrate django-make-migrations django-shell django-superuser docker-build docs format setup wheel
+.PHONY: build-docker ci ci-format ci-linters ci-docs ci-tests clean clean-docker clean-minikube clean-repo dist django-migrate django-make-migrations django-shell django-superuser docs format setup wheel
