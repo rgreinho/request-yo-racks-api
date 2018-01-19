@@ -27,7 +27,7 @@ jobs:
 
       - run:
           name: check the formatting
-          command: RUN=ci make format-check
+          command: RUN=ci make ci-format
 
       - run:
           name: run unit tests
