@@ -18,7 +18,8 @@ class PlaceList(APIView):
     # authentication_classes = (authentication.TokenAuthentication, )
     # permission_classes = (permissions.IsAdminUser, )
 
-    def get(self):
+    # pylint: disable=redefined-builtin,unused-argument
+    def get(self, request, format=None):
         """Return a list of all places nearby our coordinates."""
         # Define data.
         places_api_key = os.environ['RYR_COLLECTOR_GOOGLE_PLACES_API_KEY']
@@ -36,7 +37,8 @@ class PlaceList(APIView):
 class PlaceDetails(APIView):
     """View to provide detailed information about a specific place."""
 
-    def get(self, pid):
+    # pylint: disable=redefined-builtin,unused-argument
+    def get(self, request, pid, format=None):
         """Return the detailed information about a specific place."""
         # Define data.
         places_api_key = os.environ['RYR_COLLECTOR_GOOGLE_PLACES_API_KEY']
