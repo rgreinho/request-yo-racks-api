@@ -89,7 +89,7 @@ django-superuser: ## Create the Django super user
 	@echo "Needs to be reimplemented."
 	# $(RUN_DJANGO_MANAGE_CMD) createsuperuser
 
-deploy-minikube:
+deploy-minikube: ## Deploy the API on Minikube
 	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
 	  --install \
