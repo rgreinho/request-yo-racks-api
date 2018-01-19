@@ -11,18 +11,18 @@ SHELL = /bin/bash
 TOPDIR = $(shell git rev-parse --show-toplevel)
 
 # Docker.
-DOCKER_ORG = requestyoracks
-REPOSITORY = $(DOCKER_ORG)/$(PROJECT_NAME)
-DOCKER_IMG = $(REPOSITORY):$(TAG)
 DOCKERFILE = Dockerfile$(SUFFIX)
-DOCKER_IMAGE_COALA = coala/base:0.11
+DOCKER_ORG = requestyoracks
+DOCKER_REPO = $(DOCKER_ORG)/$(PROJECT_NAME)
+DOCKER_IMG = $(DOCKER_REPO):$(TAG)
+DOCKER_IMG_COALA = coala/base:0.11
 
 # Chart.
 CHART_REPO = ryr
 CHART_NAME = $(CHART_REPO)/$(PROJECT_NAME)
 
 # Docker run command.
-DOCKER_RUN_CMD = docker run -t -v=$$(pwd):/code --rm $(DOCKER_IMG)
+DOCKER_RUN_CMD = docker run --rm -t -v=$$(pwd):/code $(DOCKER_IMG)
 
 # Determine whether running the command in a container or locally.
 ifeq ($(RUN),docker)
@@ -31,16 +31,8 @@ else
   RUN_CMD = source venv/bin/activate &&
 endif
 
-# Docker compose run generic parameters.
-# DOCKER_COMPOSE_RUN_CMD = docker-compose run
-# DOCKER_COMPOSE_RUN_OPTS = --no-deps --rm
-# DOCKER_COMPOSE_RUN_SVC = ryr-api-django
-# DOCKER_COMPOSE_RUN_FULL = $(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_OPTS) $(DOCKER_COMPOSE_RUN_SVC)
-# DOCKER_DB_CONTAINER = ryr-api-db
-
-# Docker compose run Django parameters.
-# DOCKER_COMPOSE_RUN_DJANGO_MANAGE_CMD = python manage.py
-# DOCKER_COMPOSE_RUN_DJANGO_FULL = $(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_DJANGO_OPTS) $(DOCKER_COMPOSE_RUN_SVC) $(DOCKER_COMPOSE_RUN_DJANGO_MANAGE_CMD)
+# Docker run Django parameters.
+RUN_DJANGO_MANAGE_CMD = $(RUN_CMD) python manage.py
 
 default: setup
 
@@ -50,47 +42,52 @@ help: # Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
-ci-all: ci-linters ci-tests ci-docs ## Run all CI targets at once
+build-docker: ## Build the docker image
+	@docker build -t $(DOCKER_IMG) -f $(DOCKERFILE) .
 
-ci-linters: ## Run the static analyzers
-	@docker pull $(DOCKER_IMAGE_COALA)
-	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMAGE_COALA) coala --ci
+ci: ci-linters ci-tests ci-docs ## Run all CI targets at once
 
 ci-docs: ## Ensure the documentation builds
 	$(RUN_CMD) tox -e docs
 
+ci-format: ## Check the code formatting using YAPF
+	$(RUN_CMD) tox -e format-check
+
+ci-linters: ## Run the static analyzers
+	@docker pull $(DOCKER_IMG_COALA)
+	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMG_COALA) coala --ci
+
 ci-tests: ## Run the unit tests
 	$(RUN_CMD) tox
 
-clean: ## Remove unwanted files in project (!DESTRUCTIVE!)
-	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
-
-clean-all: clean clean-docker clean-minikube ## Clean everything (!DESTRUCTIVE!)
+clean: clean-repo clean-minikube clean-docker  ## Clean everything (!DESTRUCTIVE!)
 
 clean-docker: ## Remove all docker artifacts for this project (!DESTRUCTIVE!)
-	@docker image rm -f $(shell docker image ls --filter reference='$(REPOSITORY)' -q)
+	@docker image rm -f $(shell docker image ls --filter reference='$(DOCKER_REPO)' -q)
 
-clean-minikube: ## Remove all the Kubernetes objects associated to this project
+clean-minikube: ## Remove all the Kubernetes objects associated to this project (!DESTRUCTIVE!)
 	@helm delete --purge $(PROJECT_NAME)
 
-django-dbup: # Ensure Django DB is up and runnig
-	@docker-compose up -d $(DOCKER_DB_CONTAINER);
-	$(DOCKER_COMPOSE_RUN_CMD) $(DOCKER_COMPOSE_RUN_DJANGO_OPTS) $(DOCKER_DB_CONTAINER) bash -c "until psql -h \"$(DOCKER_DB_CONTAINER)\" -U \"postgres\" -c '\l' >/dev/null 2>&1; do sleep 1; done"
+clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
+	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
-django-debug: django-dbup ## Run Django in a way allowing the use of PDB
-	$(DOCKER_COMPOSE_RUN_CMD) --rm --service-ports $(DOCKER_COMPOSE_RUN_SVC)
+django-debug: ## Run Django in a way allowing the use of PDB
+	@echo "Needs to be reimplemented."
+	# $(RUN_DJANGO_MANAGE_CMD) --rm --service-ports $(DOCKER_COMPOSE_RUN_SVC)
 
-django-migrate: django-dbup ## Run the Django migrations
-	$(DOCKER_COMPOSE_RUN_DJANGO_FULL) migrate
+django-migrate: ## Run the Django migrations
+	@echo "Needs to be reimplemented."
+	# $(RUN_DJANGO_MANAGE_CMD) migrate
 
-django-make-migrations: django-dbup ## Prepare the Django migrations
-	$(DOCKER_COMPOSE_RUN_DJANGO_FULL) makemigrations
+django-make-migrations: ## Prepare the Django migrations
+	$(RUN_DJANGO_MANAGE_CMD) makemigrations
 
-django-shell: django-dbup ## Run the Django Shell
-	$(DOCKER_COMPOSE_RUN_DJANGO_FULL) shell
+django-shell: ## Run the Django Shell
+	$(RUN_DJANGO_MANAGE_CMD) shell
 
-django-superuser: django-dbup ## Create the Django super user
-	$(DOCKER_COMPOSE_RUN_DJANGO_FULL) createsuperuser
+django-superuser: ## Create the Django super user
+	@echo "Needs to be reimplemented."
+	# $(RUN_DJANGO_MANAGE_CMD) createsuperuser
 
 deploy-minikube:
 	cd charts \
@@ -102,17 +99,11 @@ deploy-minikube:
 
 dist: wheel ## Package the application
 
-docker-build: ## Build the docker image
-	@docker build -t $(DOCKER_IMG) -f $(DOCKERFILE) .
-
 docs: ## Build documentation
 	$(RUN_CMD) tox -e docs
 
 format: ## Format the codebase using YAPF
 	$(RUN_CMD) tox -e format
-
-format-check: ## Check the code formatting using YAPF
-	$(RUN_CMD) tox -e format-check
 
 setup: docker-build ## Setup the full environment (default)
 
@@ -124,7 +115,7 @@ venv/bin/activate: requirements.txt
 		&& pip install -U pip==9.0.1 setuptools==38.4.0 \
 		&& pip install -e .[docs,local,testing]
 
-wheel: ## Build a wheel package
+wheel: # Build a wheel package
 	$(RUN_CMD) tox -e wheel
 
-.PHONY: ci-all ci-docs ci-tests ci-linters clean-all clean clean-docker clean-minikube dist django-migrate django-make-migrations django-shell django-superuser docker-build docs format format-check setup wheel
+.PHONY: ci ci-format ci-linters ci-docs ci-tests clean clean-docker clean-minikube clean-repo dist django-migrate django-make-migrations django-shell django-superuser docker-build docs format setup wheel
