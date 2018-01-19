@@ -21,14 +21,15 @@ DOCKER_IMG_COALA = coala/base:0.11
 CHART_REPO = ryr
 CHART_NAME = $(CHART_REPO)/$(PROJECT_NAME)
 
-# Docker run command.
+# Run commands.
 DOCKER_RUN_CMD = docker run --rm -t -v=$$(pwd):/code $(DOCKER_IMG)
+LOCAL_RUN_CMD = source venv/bin/activate &&
 
 # Determine whether running the command in a container or locally.
 ifeq ($(RUN),docker)
   RUN_CMD = $(DOCKER_RUN_CMD)
 else
-  RUN_CMD = source venv/bin/activate &&
+  RUN_CMD = $(LOCAL_RUN_CMD)
 endif
 
 # Docker run Django parameters.
@@ -73,8 +74,9 @@ clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
 django-debug: ## Run Django in a way allowing the use of PDB
-	@echo "Needs to be reimplemented."
-	# $(RUN_DJANGO_MANAGE_CMD) --rm --service-ports $(DOCKER_COMPOSE_RUN_SVC)
+	@bash tools/kubernetes-django-env-vars.sh \
+		&& source $(HOME)/.config/ryr/ryr-env.sh \
+		&& $(LOCAL_RUN_CMD) $(DJANGO_MANAGE_CMD) runserver 0.0.0.0:8000
 
 django-migrate: ## Run the Django migrations
 	@bash tools/kubernetes-django-manage.sh migrate
@@ -106,7 +108,7 @@ docs: ## Build documentation
 format: ## Format the codebase using YAPF
 	$(RUN_CMD) tox -e format
 
-setup: build-docker ## Setup the full environment (default)
+setup: venv build-docker ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
 
