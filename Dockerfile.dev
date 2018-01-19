@@ -16,7 +16,7 @@ RUN apt-get update \
 COPY requirements.txt /requirements/
 
 # Upgrade pip.
-RUN pip install -r /requirements/requirements.txt tox==2.9.1
+RUN pip install -r /requirements/requirements.txt tox==2.9.1 bpython==0.17
 
 # Copy django entry point.
 COPY docker/api/django-entrypoint.sh /
