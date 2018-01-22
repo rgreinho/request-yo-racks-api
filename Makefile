@@ -3,7 +3,7 @@ PROJECT_NAME = api
 
 # Makefile parameters.
 RUN ?= docker
-SUFFIX ?= .dev
+SUFFIX ?=
 TAG ?= $(shell git describe)$(SUFFIX)
 
 # General.
