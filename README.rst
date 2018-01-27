@@ -6,27 +6,23 @@ A REST API for Request-Yo-Racks.
 Quickstart
 ----------
 
-Install `docker`_ and `docker-compose`_.
+Install `docker`_.
 
 Setup the full environment::
 
   make
 
-Start the services::
+This will setup a local virtual environment for this project, as well as build the corresponding docker image.
 
-  docker-compose up [-d]
+``make help`` will show you the available targets that will help you work on this project.
 
-The ``-d`` switch allows you to start the services in the background. Without it, the logs would be printed on the
-console, and you would need to press ``CTRL-C`` to stop the services.
+The `full setup guide`_ provides instructions to help you set up the external services required by the project locally
+(postgresql, rabbitmq, redis) and explains how to deploy this project on a local Kubernetes cluster (Minikube).
+You can also refer to the ``kubernetes`` folder of the `infra`_ project for more details about the implementation.
 
-Using the web devtools
-----------------------
-
-The ``loannister/web-devtools:1.1.0`` image contains all the tools you need to start the project (``polymer-cli``, ``bower``, ``gulp``, etc.). You do no necessaryly need to install any of them.
-
-The unit test will run on ``Firefox ESR 52``.
-
-``make help`` will show you the available targets.
+The ``make django-debug`` command will start a local instance of this project, connecting automatically to the external
+services deployed on minikube.
 
 .. _`docker`: https://docs.docker.com/engine/understanding-docker/
-.. _`docker-compose`: https://docs.docker.com/compose/overview/
+.. _`full setup guide`: https://request-yo-racks.github.io/docs/guides/setup-full-environment/
+.. _`infra`: https://github.com/request-yo-racks/infra/tree/master/kubernetes

@@ -73,10 +73,12 @@ clean-minikube: ## Remove all the Kubernetes objects associated to this project 
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
-django-debug: ## Run Django in a way allowing the use of PDB
-	@bash tools/kubernetes-django-env-vars.sh \
-		&& source $(HOME)/.config/ryr/ryr-env.sh \
+django-debug: django-envvars ## Run Django in a way allowing the use of PDB
+	source $(HOME)/.config/ryr/ryr-env.sh \
 		&& $(LOCAL_RUN_CMD) $(DJANGO_MANAGE_CMD) runserver 0.0.0.0:8000
+
+django-envvars: ## Setup Django environment variables for this project
+	@bash tools/kubernetes-django-env-vars.sh
 
 django-migrate: ## Run the Django migrations
 	@bash tools/kubernetes-django-manage.sh migrate
