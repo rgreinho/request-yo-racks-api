@@ -19,19 +19,16 @@ class PlaceList(APIView):
     # permission_classes = (permissions.IsAdminUser, )
 
     # pylint: disable=redefined-builtin,unused-argument
-    def get(self, request, format=None):
+    def get(self, request, latlong, format=None):
         """Return a list of all places nearby our coordinates."""
         # Define data.
         places_api_key = os.environ['RYR_COLLECTOR_GOOGLE_PLACES_API_KEY']
-        epoch_latlong = (30.3186037, -97.72454019999999)
-        latlong = epoch_latlong
 
         # Prepare client.
         client = CollectorClient('google', api_key=places_api_key)
         client.authenticate()
 
         # Retrieve search results.
-        # latlong = self.request.query_params.get('latlong', None)
         search_results = client.search_place(latlong)
         return Response(search_results)
 
