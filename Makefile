@@ -2,7 +2,7 @@
 PROJECT_NAME = api
 
 # Makefile parameters.
-RUN ?= docker
+RUN ?= local
 SUFFIX ?=
 TAG ?= $(shell git describe)$(SUFFIX)
 
@@ -65,10 +65,10 @@ ci-tests: ## Run the unit tests
 clean: clean-repo clean-minikube clean-docker  ## Clean everything (!DESTRUCTIVE!)
 
 clean-docker: ## Remove all docker artifacts for this project (!DESTRUCTIVE!)
-	@docker image rm -f $(shell docker image ls --filter reference='$(DOCKER_REPO)' -q)
+	@docker image rm -f $(shell docker image ls --filter reference='$(DOCKER_REPO)' -q) || true
 
 clean-minikube: ## Remove all the Kubernetes objects associated to this project (!DESTRUCTIVE!)
-	@helm delete --purge $(PROJECT_NAME)
+	@helm delete --purge $(PROJECT_NAME) || true
 
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
@@ -96,7 +96,8 @@ django-superuser: ## Create the Django super user
 		--email admin@requestyoracks.com
 
 deploy-minikube: ## Deploy the API on Minikube
-	cd charts \
+	kubectl config use-context minikube \
+	&& cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
 	  --install \
 		-f values.minikube.yaml \
