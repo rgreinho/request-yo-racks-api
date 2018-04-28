@@ -104,6 +104,14 @@ deploy-minikube: ## Deploy the API on Minikube
 	  --set image.tag=$(TAG) \
 		--set persistence.hostPath.path=$(PWD)
 
+deploy-prod: ## Deploy the API in production
+	kubectl config use-context gke_request-yo-racks-1499134244211_us-central1-a_ryr-prod \
+	&& cd charts \
+	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
+	  --install \
+		-f values.prod.yaml \
+	  --set image.tag=$(TAG)
+
 dist: wheel ## Package the application
 
 docs: ## Build documentation
