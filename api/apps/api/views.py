@@ -1,10 +1,21 @@
 """Define the API views."""
 import os
 
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.apps.api.collectors import CollectorClient
+
+
+class Health(APIView):
+    """Health check endpoint."""
+
+    # pylint: disable=redefined-builtin,unused-argument
+    def get(self, request):
+        """Return the status of the application."""
+        content = {'status': 'ok'}
+        return Response(content, status=status.HTTP_200_OK)
 
 
 class PlaceList(APIView):
