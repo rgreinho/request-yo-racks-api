@@ -4,6 +4,9 @@ set -eo pipefail
 # Define variables.
 : ${RYR_API_API_PORT:=8000}
 
+# Prepare the static files.
+django-admin collectstatic
+
 # Migrate db, so we have the latest db schema.
 django-admin migrate
 
