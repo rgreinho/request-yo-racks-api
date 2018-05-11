@@ -15,13 +15,6 @@ def root(x):
 # Insert the apps dir at the top of your path.
 sys.path.insert(0, root('apps'))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'CHANGE THIS!!!'
-
-# Allow all host headers
-# SECURITY WARNING: don't run with this setting in production!
-ALLOWED_HOSTS = ['*']
-
 # Django applications.
 DJANGO_APPS = [
     'django.contrib.admin',
