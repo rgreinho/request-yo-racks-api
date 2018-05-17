@@ -19,8 +19,5 @@ configmap:
   DJANGO_SETTINGS_MODULE: api.settings.production
   RYR_API_API_OPTS: "--timeout 1800 --chdir /usr/src/app"
 
-persistence:
-  enabled: false
-
 service:
   type: ClusterIP
