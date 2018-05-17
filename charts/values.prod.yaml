@@ -14,6 +14,8 @@ env:
   REDIS_URL: redis://$(redis-password)@$(REDIS_MASTER_SERVICE_HOST):$(REDIS_MASTER_SERVICE_PORT)
 
 configmap:
+  DJANGO_ALLOWED_HOSTS: api.requestyoracks.org
+  DJANGO_CORS_ORIGIN_WHITELIST: www.requestyoracks.org
   DJANGO_SETTINGS_MODULE: api.settings.production
   RYR_API_API_OPTS: "--timeout 1800 --chdir /usr/src/app"
 
