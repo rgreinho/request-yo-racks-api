@@ -1,3 +1,10 @@
+ingress:
+  hosts:
+    - api.192.168.99.100.nip.io
+
+service:
+  type: NodePort
+
 configmap:
   DJANGO_SETTINGS_MODULE: api.settings.local
   RYR_API_API_OPTS: "--reload --timeout 1800 --chdir /usr/src/app"
