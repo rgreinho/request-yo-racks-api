@@ -1,4 +1,4 @@
-FROM python:3.6.4-slim as builder
+FROM python:3.6.5-slim-stretch as builder
 MAINTAINER Rémy Greinhofer <remy.greinhofer@gmail.com>
 
 # Update the package list.
@@ -15,12 +15,11 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Build the packages.
-RUN pip install wheel==0.30.0 \
-  && python setup.py bdist_wheel
+RUN python setup.py bdist_wheel
 
 ###
 # Create the release image.
-FROM python:3.6.4-slim
+FROM python:3.6.5-slim-stretch
 MAINTAINER Rémy Greinhofer <remy.greinhofer@gmail.com>
 
 # Copy the package and install it.

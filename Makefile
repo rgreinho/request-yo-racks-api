@@ -68,7 +68,7 @@ clean-docker: ## Remove all docker artifacts for this project (!DESTRUCTIVE!)
 	@docker image rm -f $(shell docker image ls --filter reference='$(DOCKER_REPO)' -q) || true
 
 clean-minikube: ## Remove all the Kubernetes objects associated to this project (!DESTRUCTIVE!)
-	@helm delete --purge $(PROJECT_NAME) || true
+	@helm --kube-context minikube delete --purge $(PROJECT_NAME) || true
 
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
@@ -96,18 +96,18 @@ django-superuser: ## Create the Django super user
 		--email admin@requestyoracks.com
 
 deploy-minikube: ## Deploy the API on Minikube
-	kubectl config use-context minikube \
-	&& cd charts \
+	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
+		--kube-context minikube \
 	  --install \
 		-f values.minikube.yaml \
 	  --set image.tag=$(TAG) \
 		--set persistence.hostPath.path=$(PWD)
 
 deploy-prod: ## Deploy the API in production
-	kubectl config use-context gke_request-yo-racks-1499134244211_us-central1-a_ryr-prod \
-	&& cd charts \
+	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
+		--kube-context gke_request-yo-racks-1499134244211_us-central1-a_ryr-prod \
 	  --install \
 		-f values.prod.yaml \
 	  --set image.tag=$(TAG)
@@ -127,7 +127,7 @@ venv: venv/bin/activate ## Setup local venv
 venv/bin/activate: requirements.txt
 	test -d venv || virtualenv --no-setuptools --no-wheel -p python3 venv || python3 -m venv venv
 	. venv/bin/activate \
-		&& pip install -U pip==9.0.1 setuptools==38.4.0 \
+		&& pip install -U pip==10.0.1 setuptools==39.2.0 \
 		&& pip install -e .[docs,local,testing]
 
 wheel: # Build a wheel package
