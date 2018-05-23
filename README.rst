@@ -55,15 +55,21 @@ Once your accounts are setup, store your developer keys in a global environment 
 Setup
 """""
 
-Install `docker`_, and `virtualbox`_::
+Install `docker`_, and `virtualbox`_:
 
-  brew cask install docker virtualbox
+.. code-block:: bash
 
-Setup a directory to store the RYR projects::
+  brew cask install docker virtualbox virtualbox-extension-pack
+
+Setup a directory to store the RYR projects:
+
+.. code-block:: bash
 
   export RYR_PROJECT_DIR="${HOME}/projects/request-yo-racks"
 
-Clone the projects::
+Clone the projects:
+
+.. code-block:: bash
 
   mkdir -p "${RYR_PROJECT_DIR}"
   cd "${RYR_PROJECT_DIR}"
@@ -71,22 +77,48 @@ Clone the projects::
     git clone git@github.com:request-yo-racks/${project}.git
   done
 
-Install the services required by the API on minikube::
+Install the services required by the API on minikube:
+
+.. code-block:: bash
 
   cd "${RYR_PROJECT_DIR}/infra/kubernetes"
   make provision configure
 
-Prepare your developement environment::
+Deploy a containerized version of the API on Minikube:
+
+.. code-block:: bash
 
   eval $(minikube docker-env)
   cd "${RYR_PROJECT_DIR}/api"
   make setup deploy-minikube
 
-Local developement
-------------------
+Local development workflow
+--------------------------
+
+Provision Minikube and configure the external services:
+
+.. code-block:: bash
+
+  cd "${RYR_PROJECT_DIR}/infra/kubernetes"
+  make provision configure
+
+Prepare the developer environment for the API:
+
+.. code-block:: bash
+
+  cd "${RYR_PROJECT_DIR}/api"
+  make venv
+  make django-debug
 
 The ``make django-debug`` command will start a local instance of this project, and connect it automatically to the
-services deployed on minikube.
+services deployed on minikube. The service will be exposed at ``http://localhost:8000``. The development server will
+perform a live reload of your code every time you update a file.
+
+Query the local API server to ensure everything works:
+
+.. code-block:: bash
+
+  curl http://localhost:8000
 
 .. _`docker`: https://docs.docker.com/engine/understanding-docker/
 .. _`full setup guide`: https://request-yo-racks.github.io/docs/guides/setup-full-environment/
