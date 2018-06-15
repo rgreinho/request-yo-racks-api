@@ -73,10 +73,12 @@ clean-minikube: ## Remove all the Kubernetes objects associated to this project 
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
-django-debug: django-envvars ## Run Django in a way allowing the use of PDB
+django-debug: ## Run Django locally
 	source $(HOME)/.config/ryr/ryr-env.sh \
 		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
-		&& $(LOCAL_RUN_CMD) $(DJANGO_MANAGE_CMD) runserver 0.0.0.0:8000
+		&& export RYR_API_API_OPTS="--reload --timeout 1800" \
+		&& eval $$(tools/kubernetes-django-env-vars.sh) \
+		&& $(LOCAL_RUN_CMD) docker/api/django-entrypoint.sh
 
 django-envvars: ## Setup Django environment variables for this project
 	@bash tools/kubernetes-django-env-vars.sh

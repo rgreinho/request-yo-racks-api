@@ -25,6 +25,6 @@ export DATABASE_URL=${PG_URL}
 export REDIS_URL=${REDIS_URL}
 
 # Display all generated env vars.
-echo "The following variables have been generated and exported:"
 echo "export DATABASE_URL=${PG_URL}"
 echo "export REDIS_URL=${REDIS_URL}"
+echo "# The previous variables have been generated and exported."
