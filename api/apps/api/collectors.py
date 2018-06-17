@@ -82,10 +82,6 @@ class AbstractClientCollector(AbstractCollector):
 
     __metaclass__ = abc.ABCMeta
 
-    # def __init__(self):
-    # """Initialize the Abstract Client Collector."""
-    # super(AbstractClientCollector, self).__init__()
-
     @abc.abstractmethod
     def authenticate(self, api_key):
         """Authenticate against a provider."""
@@ -96,10 +92,6 @@ class YelpCollector(AbstractRestCollector):
     """Define the Yelp Collector."""
 
     BASE_URL = "https://api.yelp.com/"
-
-    # def __init__(self):
-    # """Initialize the collector."""
-    # super(YelpCollector, self).__init__()
 
     def authenticate(self, client_id, client_secret):
         """

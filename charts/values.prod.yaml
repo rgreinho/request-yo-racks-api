@@ -10,7 +10,7 @@ ingress:
         - api.requestyoracks.org
 
 env:
-  DATABASE_URL:  postgres://postgres:$(postgres-password)@$(POSTGRESQL_SERVICE_HOST):$(POSTGRESQL_SERVICE_PORT)/postgres
+  DATABASE_URL: postgres://postgres:$(postgres-password)@$(POSTGRESQL_SERVICE_HOST):$(POSTGRESQL_SERVICE_PORT)/postgres
   REDIS_URL: redis://$(redis-password)@$(REDIS_MASTER_SERVICE_HOST):$(REDIS_MASTER_SERVICE_PORT)
 
 configmap:
