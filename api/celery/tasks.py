@@ -5,6 +5,7 @@ from celery import chord
 from celery.schedules import crontab
 from celery.utils.log import get_task_logger
 
+from api.apps.api.collectors import BusinessInfo
 from api.apps.api.collectors import CollectorClient
 from api.celery.celery import app
 
@@ -36,10 +37,14 @@ def collect_place_details_from_google(place_id):
 @app.task(ignore_result=False)
 def combine_collector_results(collector_results):
     """Combine the results provided by several collectors."""
-    # TODO(rgreinhofer): Once we'll have a second collector, we'll think about an algorithm to merge the results.
-    #   As for now, we simply take the first one.
-    combined_results = collector_results[0]
-    return combined_results
+
+    c = BusinessInfo()
+    for collector_result in collector_results:
+        tmp = BusinessInfo()
+        tmp.__dict__ = collector_result
+        c = c.merge(tmp)
+
+    return c.__dict__
 
 
 def collect_place_details(place_id):
