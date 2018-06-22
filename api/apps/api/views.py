@@ -1,4 +1,5 @@
 """Define the API views."""
+import logging
 import os
 
 from rest_framework import status
@@ -6,6 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.apps.api.collectors import CollectorClient
+from api.celery.tasks import collect_place_details
+
+logger = logging.getLogger(__name__)
 
 
 class Health(APIView):
@@ -50,13 +54,5 @@ class PlaceDetails(APIView):
     # pylint: disable=redefined-builtin,unused-argument
     def get(self, request, pid, format=None):
         """Return the detailed information about a specific place."""
-        # Define data.
-        places_api_key = os.environ['RYR_COLLECTOR_GOOGLE_PLACES_API_KEY']
-
-        # Prepare client.
-        client = CollectorClient('google', api_key=places_api_key)
-        client.authenticate()
-
-        # Retrieve detailed results.
-        details = client.retrieve_details(pid)
-        return Response(details)
+        result = collect_place_details(pid)
+        return Response(result.get())

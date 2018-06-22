@@ -18,7 +18,7 @@ DOCKER_IMG = $(DOCKER_REPO):$(TAG)
 DOCKER_IMG_COALA = coala/base:0.11
 
 # Chart.
-CHART_REPO = ryr
+CHART_REPO = /Users/remy/projects/request-yo-racks/charts/charts
 CHART_NAME = $(CHART_REPO)/$(PROJECT_NAME)
 
 # Run commands.
@@ -73,15 +73,22 @@ clean-minikube: ## Remove all the Kubernetes objects associated to this project 
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
-django-debug: ## Run Django locally
+django-envvars: ## Setup Django environment variables for this project
+	@bash tools/kubernetes-django-env-vars.sh
+
+django-local-celery-worker: ## Start a local celery worker
+	source $(HOME)/.config/ryr/ryr-env.sh \
+		&& export RYR_LOG_LEVEL=info \
+		&& eval $$(tools/kubernetes-django-env-vars.sh) \
+		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh celery worker
+
+django-local-api: ## Run Django locally
 	source $(HOME)/.config/ryr/ryr-env.sh \
 		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
 		&& export RYR_API_API_OPTS="--reload --timeout 1800" \
+		&& export RYR_LOG_LEVEL=debug \
 		&& eval $$(tools/kubernetes-django-env-vars.sh) \
-		&& $(LOCAL_RUN_CMD) docker/api/django-entrypoint.sh
-
-django-envvars: ## Setup Django environment variables for this project
-	@bash tools/kubernetes-django-env-vars.sh
+		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh api
 
 django-migrate: ## Run the Django migrations
 	@bash tools/kubernetes-django-manage.sh migrate
@@ -97,20 +104,38 @@ django-superuser: ## Create the Django super user
 		--username admin\
 		--email admin@requestyoracks.com
 
-deploy-minikube: ## Deploy the API on Minikube
+deploy-minikube-api: ## Deploy the API on Minikube
 	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
 		--kube-context minikube \
 	  --install \
+		-f values.common.yaml \
 		-f values.minikube.yaml \
 	  --set image.tag=$(TAG) \
 		--set persistence.hostPath.path=$(PWD)
 
-deploy-prod: ## Deploy the API in production
+deploy-minikube-celery-worker: ## Deploy the API on Minikube
+	cd charts/celery-worker \
+	&& helm upgrade celery-worker $(CHART_REPO)/celery-worker \
+		--kube-context minikube \
+	  --install \
+		-f values.common.yaml \
+		-f values.minikube.yaml \
+	  --set image.tag=$(TAG)
+
+deploy-minikube-flower: ## Deploy Flower on Minikiube
+	helm upgrade flower ryr/flower \
+		--kube-context minikube \
+		--install \
+		--version 0.1.0
+
+deploy-prod-api: ## Deploy the API in production
 	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
 		--kube-context gke_request-yo-racks-1499134244211_us-central1-a_ryr-prod \
 	  --install \
+		--version 0.2.5 \
+		-f values.common.yaml \
 		-f values.prod.yaml \
 	  --set image.tag=$(TAG)
 
