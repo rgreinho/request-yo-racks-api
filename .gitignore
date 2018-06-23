@@ -12,4 +12,5 @@ build/
 celerybeat-schedule
 dist/
 docs/build/
+htmlcov/
 venv/

@@ -5,6 +5,7 @@ from faker import Faker
 import pytest
 import requests
 
+from api.apps.api.collectors import BusinessInfo
 from api.apps.api.collectors import CollectorClient
 from api.apps.api.collectors import GoogleCollector
 from api.apps.api.collectors import YelpCollector
@@ -94,6 +95,65 @@ class TestYelpCollector():
         details_results = yelp.retrieve_place_details(self.fake.pystr())
 
         assert type(details_results) is dict
+
+
+class TestBusinessInfo:
+    """Implement tests for BusinessInfo."""
+
+    # Merge scenario list.
+    # The first tuple contains:
+    #   0. first BusinessInfo object
+    #   1. second BusinessInfo object
+    #   2. expected result
+    # The second tuple is a description of the scenario.
+    merge_scenarios = [
+        ((
+            BusinessInfo(name='name1'),
+            BusinessInfo(address='address2'),
+            BusinessInfo(name='name1', address='address2'),
+        ), 'Ensure different properties are merged for same weight objects.'),
+        ((
+            BusinessInfo(name='name1'),
+            BusinessInfo(name='name2'),
+            BusinessInfo(name='name1'),
+        ), 'Ensure no property is overwritten for same weight objects.'),
+        ((
+            BusinessInfo(name='name1', weight=1),
+            BusinessInfo(name='name2', weight=5),
+            BusinessInfo(name='name1'),
+        ), 'Ensure objects with the less weight overwrites properties.'),
+        ((
+            BusinessInfo(name='name1', weight=3),
+            BusinessInfo(name='name2', weight=2),
+            BusinessInfo(name='name2'),
+        ), 'Ensure objects with the less weight overwrites properties.'),
+        ((
+            BusinessInfo(name='name1', weight=3),
+            BusinessInfo(address='address2', weight=2),
+            BusinessInfo(name='name1', address='address2'),
+        ), 'Ensure objects with the less weight overwrites properties.'),
+    ]
+
+    # Lambdas to parse the scenarios and feed the data to the test functions.
+    scenario_inputs = lambda scenarios: [test_input[0] for test_input in scenarios]
+    scenario_ids = lambda scenarios: [test_input[1] for test_input in scenarios]
+
+    def test_geolocation_00(self):
+        """Ensure geolocation is computed properly for default objects."""
+        b1 = BusinessInfo()
+        assert b1.geolocation() == '0.0,0.0'
+
+    def test_geolocation_01(self):
+        """Ensure geolocation is computed properly."""
+        b1 = BusinessInfo(latitude=1.0, longitude=2.0)
+        assert b1.geolocation() == '1.0,2.0'
+
+    @pytest.mark.parametrize("test_input", scenario_inputs(merge_scenarios), ids=scenario_ids(merge_scenarios))
+    def test_merge(self, test_input):
+        """Ensure objects are merge correctly."""
+        actual = test_input[0].merge(test_input[1])
+        expected = test_input[2]
+        assert actual == expected
 
 
 # Google Maps Place Search API Response example.

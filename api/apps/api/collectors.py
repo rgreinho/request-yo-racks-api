@@ -24,10 +24,41 @@ class BusinessInfo:
     website: str = ''
     parking_info: str = ''
     extra_info: str = ''
+    weight: int = 0
 
     def geolocation(self) -> str:
         """Compute the business geolocation."""
         return f'{self.latitude},{self.longitude}'
+
+    def merge(self, other):
+        """
+        Merge 2 BusinessInfo object together.
+
+        The lightest BusinessInfo object has priority.
+
+        :other: BusinessInfo to merge into this instance.
+        :rtype: A BusinessInfo with de data merged by weight, and a new weight of 0.
+        """
+        merged = BusinessInfo()
+        for key in self.__dict__:
+            # Ignore the 'weight' property.
+            if key == 'weight':
+                continue
+
+            # First merge the key of the current instance if it is not empty, else take the key of other.
+            merged.__dict__[key] = self.__dict__[key] if self.__dict__[key] else other.__dict__[key]
+
+            # Do not perform any other action if the weights are equal.
+            if self.weight == other.weight:
+                continue
+
+            # Otherwise the lightest object has the priority.
+            if self.weight < other.weight and self.__dict__[key]:
+                merged.__dict__[key] = self.__dict__[key]
+            elif self.weight > other.weight and other.__dict__[key]:
+                merged.__dict__[key] = other.__dict__[key]
+
+        return merged
 
 
 class AbstractCollector:
