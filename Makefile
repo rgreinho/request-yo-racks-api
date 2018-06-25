@@ -73,23 +73,6 @@ clean-minikube: ## Remove all the Kubernetes objects associated to this project 
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
-django-envvars: ## Setup Django environment variables for this project
-	@bash tools/kubernetes-django-env-vars.sh
-
-django-local-celery-worker: ## Start a local celery worker
-	source $(HOME)/.config/ryr/ryr-env.sh \
-		&& export RYR_LOG_LEVEL=info \
-		&& eval $$(tools/kubernetes-django-env-vars.sh) \
-		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh celery worker
-
-django-local-api: ## Run Django locally
-	source $(HOME)/.config/ryr/ryr-env.sh \
-		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
-		&& export RYR_API_API_OPTS="--reload --timeout 1800" \
-		&& export RYR_LOG_LEVEL=debug \
-		&& eval $$(tools/kubernetes-django-env-vars.sh) \
-		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh api
-
 django-migrate: ## Run the Django migrations
 	@bash tools/kubernetes-django-manage.sh migrate
 
@@ -111,8 +94,7 @@ deploy-minikube-api: ## Deploy the API on Minikube
 	  --install \
 		-f values.common.yaml \
 		-f values.minikube.yaml \
-	  --set image.tag=$(TAG) \
-		--set persistence.hostPath.path=$(PWD)
+	  --set image.tag=$(TAG)
 
 deploy-minikube-celery-worker: ## Deploy the API on Minikube
 	cd charts/celery-worker \
@@ -147,6 +129,23 @@ docs: ## Build documentation
 format: ## Format the codebase using YAPF
 	$(RUN_CMD) tox -e format
 
+local-envvars: ## Setup Django environment variables for this project
+	@bash tools/kubernetes-local-env-vars.sh
+
+local-celery-worker: ## Start a local celery worker
+	source $(HOME)/.config/ryr/ryr-env.sh \
+		&& export RYR_LOG_LEVEL=info \
+		&& eval $$(tools/kubernetes-django-env-vars.sh) \
+		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh celery worker
+
+local-django-api: ## Run Django locally
+	source $(HOME)/.config/ryr/ryr-env.sh \
+		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
+		&& export RYR_API_API_OPTS="--reload --timeout 1800" \
+		&& export RYR_LOG_LEVEL=info \
+		&& eval $$(tools/kubernetes-django-env-vars.sh) \
+		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh api
+
 setup: venv build-docker ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
@@ -157,7 +156,7 @@ venv/bin/activate: requirements.txt
 		&& pip install -U pip==10.0.1 setuptools==39.2.0 \
 		&& pip install -e .[docs,local,testing]
 
-wheel: # Build a wheel package
+wheel: ## Build a wheel package
 	$(RUN_CMD) tox -e wheel
 
-.PHONY: build-docker ci ci-format ci-linters ci-docs ci-tests clean clean-docker clean-minikube clean-repo dist django-migrate django-make-migrations django-shell django-superuser docs format setup wheel
+.PHONY: build-docker ci ci-docs ci-format ci-linters ci-tests clean clean-docker clean-minikube clean-repo deploy-minikube-api deploy-minikube-celery-worker deploy-minikube-flower deploy-prod-api dist django-make-migrations django-migrate django-shell django-superuser docs format local-envvars local-django-api local-celery-worker setup venv wheel

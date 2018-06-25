@@ -23,7 +23,7 @@ Create a topic branch following the these naming conventions:
 * if it fixes an existing issue, name you branch `issue/xxx/branch-topic`, where `xxx` is the issue number, and the branch topic is a set of keywords describing your branch.
 * if it does not have a related issue, simply name it `branch-topic`
 
-For instance, for the issue `request-yo-racks/infra#41`_:
+For instance, for the issue `request-yo-racks/api#41`_:
 
 .. code-block::bash
 
@@ -44,5 +44,5 @@ understanding of what led to it. Please refer to `How to Write a Git Commit Mess
 
 .. _`Issue`: https://github.com/request-yo-racks/api/issues
 .. _`Pull Request`: https://github.com/request-yo-racks/api/pulls
-.. _`request-yo-racks/infra#41`: https://github.com/request-yo-racks/api/issues/41
+.. _`request-yo-racks/api#41`: https://github.com/request-yo-racks/api/issues/41
 .. _`How to Write a Git Commit Message`: http://chris.beams.io/posts/git-commit

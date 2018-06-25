@@ -1,5 +1,5 @@
-collectors
-==========
+API Developer Reference
+=======================
 
 .. toctree::
    :maxdepth: 4

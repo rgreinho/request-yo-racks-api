@@ -67,7 +67,7 @@ pygments_style = 'sphinx'
 # html_theme_options = {'show_related': True, 'fixed_sidebar': True, 'page_width': '80%', 'sidebar_width': '20%'}
 html_theme = 'basicstrap'
 html_theme_options = {
-    'sidebar_span': 2,  # 1(min) - 12(max)
+    'sidebar_span': 3,  # 1(min) - 12(max)
 }
 # html_sidebars = {
 #     '**': ['localtoc.html', 'sourcelink.html', 'searchbox.html'],
