@@ -12,14 +12,5 @@ Contents:
    :maxdepth: 2
 
    readme
-   installation
-   usage
    contributing
    collectors/modules
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
