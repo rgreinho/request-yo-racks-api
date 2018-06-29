@@ -26,6 +26,7 @@ brew install \
   docker-completion \
   editorconfig \
   pip-completion \
+  postgresql \
   python 3 \
   shellcheck
 

@@ -156,7 +156,7 @@ local-envvars: ## Setup Django environment variables for this project
 local-celery-worker: ## Start a local celery worker
 	source $(HOME)/.config/ryr/ryr-env.sh \
 		&& export RYR_LOG_LEVEL=info \
-		&& eval $$(tools/kubernetes-django-env-vars.sh) \
+		&& eval $$(tools/kubernetes-local-env-vars.sh) \
 		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh celery worker
 
 .PHONY: local-django-api

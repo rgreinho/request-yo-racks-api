@@ -1,7 +1,13 @@
 [run]
 omit =
     *__init__.py
-    api/apps/api/tests/*
     api/settings/*
+    api/static.py
     api/urls.py
     api/wsgi.py
+    api/apps/api/tests/*
+    api/apps/api/urls.py
+    api/apps/api/views.py
+
+[report]
+fail_under = 90.0

@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.apps.api.collectors import CollectorClient
+from api.apps.api.collectors.google import GoogleCollector
 from api.celery.tasks import collect_place_details
 
 logger = logging.getLogger(__name__)
@@ -40,12 +40,12 @@ class PlaceList(APIView):
         places_api_key = os.environ['RYR_COLLECTOR_GOOGLE_PLACES_API_KEY']
 
         # Prepare client.
-        client = CollectorClient('google', api_key=places_api_key)
-        client.authenticate()
+        gmap = GoogleCollector()
+        gmap.authenticate(api_key=places_api_key)
 
-        # Retrieve search results.
-        search_results = client.search_place(latlong)
-        return Response(search_results)
+        # Retrieve nearby places.
+        places_nearby = gmap.search_places_nearby(latlong)
+        return Response(places_nearby)
 
 
 class PlaceDetails(APIView):
@@ -54,5 +54,6 @@ class PlaceDetails(APIView):
     # pylint: disable=redefined-builtin,unused-argument
     def get(self, request, pid, format=None):
         """Return the detailed information about a specific place."""
-        result = collect_place_details(pid)
+        place_id, name, address = pid.split(',')
+        result = collect_place_details(place_id, name, address)
         return Response(result.get())
