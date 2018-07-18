@@ -2,7 +2,6 @@
 import os
 
 from celery import chord
-from celery.schedules import crontab
 from celery.utils.log import get_task_logger
 
 from api.apps.api.collectors import BusinessInfo
@@ -14,7 +13,7 @@ logger = get_task_logger(__name__)
 
 @app.task(ignore_result=False)
 def add(x, y):
-    """Adds 2 numbers together."""
+    """Add 2 numbers together."""
     logger.info(f'Starting add task with {x},{y}.')
     return int(x + y)
 
@@ -37,7 +36,6 @@ def collect_place_details_from_google(place_id):
 @app.task(ignore_result=False)
 def combine_collector_results(collector_results):
     """Combine the results provided by several collectors."""
-
     c = BusinessInfo()
     for collector_result in collector_results:
         tmp = BusinessInfo()

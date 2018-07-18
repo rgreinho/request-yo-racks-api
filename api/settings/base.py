@@ -1,3 +1,4 @@
+"""Define the django settings for a common to all setup."""
 import os
 import sys
 from urllib.parse import urlparse
@@ -9,6 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def root(x):
+    """Generate a path from the root."""
     return os.path.join(BASE_DIR, x)
 
 

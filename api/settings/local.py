@@ -1,3 +1,4 @@
+"""Define the django settings for a local setup."""
 from .base import *  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!

@@ -15,7 +15,6 @@ DOCKERFILE = Dockerfile$(SUFFIX)
 DOCKER_ORG = requestyoracks
 DOCKER_REPO = $(DOCKER_ORG)/$(PROJECT_NAME)
 DOCKER_IMG = $(DOCKER_REPO):$(TAG)
-DOCKER_IMG_COALA = coala/base:0.11
 
 # Chart.
 CHART_REPO = /Users/remy/projects/request-yo-racks/charts/charts
@@ -61,8 +60,6 @@ ci-format: ## Check the code formatting using YAPF
 
 .PHONY: ci-linters
 ci-linters: ## Run the static analyzers
-	@docker pull $(DOCKER_IMG_COALA)
-	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMG_COALA) coala --ci
 
 .PHONY: ci-tests
 ci-tests: ## Run the unit tests
