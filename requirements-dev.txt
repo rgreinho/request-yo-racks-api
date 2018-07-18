@@ -1,5 +1,5 @@
-Faker==0.8.16
-Sphinx==1.7.5
+Faker==0.8.17
+Sphinx==1.7.6
 bpython==0.17.1
 flake8==3.5.0
 pydocstyle==2.1.1
@@ -7,7 +7,7 @@ pylint==2.0.0
 model-mommy==1.6.0
 pytest-cov==2.5.1
 pytest-mock==1.10.0
-pytest==3.6.1
+pytest==3.6.3
 q==2.6
 sphinxjp.themes.basicstrap==0.4.3
 tox==3.1.2
