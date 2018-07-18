@@ -44,49 +44,64 @@ help: # Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
+.PHONY: build-docker
 build-docker: ## Build the docker image
 	@docker build -t $(DOCKER_IMG) -f $(DOCKERFILE) .
 
+.PHONY: ci
 ci: ci-linters ci-tests ci-docs ## Run all CI targets at once
 
+.PHONY: ci-docs
 ci-docs: ## Ensure the documentation builds
 	$(RUN_CMD) tox -e docs
 
+.PHONY: ci-format
 ci-format: ## Check the code formatting using YAPF
 	$(RUN_CMD) tox -e format-check
 
+.PHONY: ci-linters
 ci-linters: ## Run the static analyzers
 	@docker pull $(DOCKER_IMG_COALA)
 	@docker run --rm -t -v=$$(pwd):/app --workdir=/app $(DOCKER_IMG_COALA) coala --ci
 
+.PHONY: ci-tests
 ci-tests: ## Run the unit tests
 	$(RUN_CMD) tox
 
+.PHONY: clean
 clean: clean-repo clean-minikube clean-docker  ## Clean everything (!DESTRUCTIVE!)
 
+.PHONY: clean-docker
 clean-docker: ## Remove all docker artifacts for this project (!DESTRUCTIVE!)
 	@docker image rm -f $(shell docker image ls --filter reference='$(DOCKER_REPO)' -q) || true
 
+.PHONY: clean-minikube
 clean-minikube: ## Remove all the Kubernetes objects associated to this project (!DESTRUCTIVE!)
 	@helm --kube-context minikube delete --purge $(PROJECT_NAME) || true
 
+.PHONY: clean-repo
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
 
+.PHONY: django-migrate
 django-migrate: ## Run the Django migrations
 	@bash tools/kubernetes-django-manage.sh migrate
 
+.PHONY: django-make-migrations
 django-make-migrations: ## Prepare the Django migrations
 	@bash tools/kubernetes-django-manage.sh makemigrations
 
+.PHONY: django-shell
 django-shell: ## Run the Django Shell
 	@bash tools/kubernetes-django-manage.sh shell
 
+.PHONY: django-superuser
 django-superuser: ## Create the Django super user
 	@bash tools/kubernetes-django-manage.sh createsuperuser \
 		--username admin\
 		--email admin@requestyoracks.com
 
+.PHONY: deploy-minikube-api
 deploy-minikube-api: ## Deploy the API on Minikube
 	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
@@ -96,6 +111,7 @@ deploy-minikube-api: ## Deploy the API on Minikube
 		-f values.minikube.yaml \
 	  --set image.tag=$(TAG)
 
+.PHONY: deploy-minikube-celery-worker
 deploy-minikube-celery-worker: ## Deploy the API on Minikube
 	cd charts/celery-worker \
 	&& helm upgrade celery-worker $(CHART_REPO)/celery-worker \
@@ -105,12 +121,14 @@ deploy-minikube-celery-worker: ## Deploy the API on Minikube
 		-f values.minikube.yaml \
 	  --set image.tag=$(TAG)
 
+.PHONY: deploy-minikube-flower
 deploy-minikube-flower: ## Deploy Flower on Minikiube
 	helm upgrade flower ryr/flower \
 		--kube-context minikube \
 		--install \
 		--version 0.1.0
 
+.PHONY: deploy-prod-api
 deploy-prod-api: ## Deploy the API in production
 	cd charts \
 	&& helm upgrade $(PROJECT_NAME) $(CHART_NAME) \
@@ -121,23 +139,29 @@ deploy-prod-api: ## Deploy the API in production
 		-f values.prod.yaml \
 	  --set image.tag=$(TAG)
 
+.PHONY: dist
 dist: wheel ## Package the application
 
+.PHONY: docs
 docs: ## Build documentation
 	$(RUN_CMD) tox -e docs
 
+.PHONY: format
 format: ## Format the codebase using YAPF
 	$(RUN_CMD) tox -e format
 
+.PHONY: local-envvars
 local-envvars: ## Setup Django environment variables for this project
 	@bash tools/kubernetes-local-env-vars.sh
 
+.PHONY: local-celery-worker
 local-celery-worker: ## Start a local celery worker
 	source $(HOME)/.config/ryr/ryr-env.sh \
 		&& export RYR_LOG_LEVEL=info \
 		&& eval $$(tools/kubernetes-django-env-vars.sh) \
 		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh celery worker
 
+.PHONY: local-django-api
 local-django-api: ## Run Django locally
 	source $(HOME)/.config/ryr/ryr-env.sh \
 		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
@@ -146,17 +170,17 @@ local-django-api: ## Run Django locally
 		&& eval $$(tools/kubernetes-django-env-vars.sh) \
 		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh api
 
+.PHONY: setup
 setup: venv build-docker ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
 
 venv/bin/activate: requirements.txt
-	test -d venv || virtualenv --no-setuptools --no-wheel -p python3 venv || python3 -m venv venv
+	test -d venv || python3 -m venv venv || virtualenv --no-setuptools --no-wheel -p python3 venv
 	. venv/bin/activate \
-		&& pip install -U pip==10.0.1 setuptools==39.2.0 \
-		&& pip install -e .[docs,local,testing]
+		&& pip install -r requirements-dev.txt \
+		&& pip install -e .
 
+.PHONY: wheel
 wheel: ## Build a wheel package
 	$(RUN_CMD) tox -e wheel
-
-.PHONY: build-docker ci ci-docs ci-format ci-linters ci-tests clean clean-docker clean-minikube clean-repo deploy-minikube-api deploy-minikube-celery-worker deploy-minikube-flower deploy-prod-api dist django-make-migrations django-migrate django-shell django-superuser docs format local-envvars local-django-api local-celery-worker setup venv wheel
