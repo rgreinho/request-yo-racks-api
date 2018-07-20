@@ -1,61 +1,79 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
+defaults: &defaults
+  docker:
+    - image: circleci/python:3.7.0-stretch-node
+  working_directory: ~/project
 
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/python:3.6.5-stretch-node
-
-    working_directory: ~/repo
-
+  prepare:
+    <<: *defaults
     steps:
       - checkout
-
       - restore_cache:
-          keys: deps-{{ .Branch }}--{{ checksum "requirements.txt" }}
-
+          keys: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
       - run:
           name: install dependencies
-          command: RUN=ci make venv
-
+          command: make venv
       - save_cache:
           paths:
             - ./venv
-          key: deps-{{ .Branch }}--{{ checksum "requirements.txt" }}
+          key: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+      - persist_to_workspace:
+          root: ~/project
 
+  format:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: check the formatting
-          command: RUN=ci make ci-format
+          name: check formatter
+          command: make ci-format
 
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: run unit tests
-          command: RUN=ci make ci-tests
+          name: run linters
+          command: make ci-linters
 
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
-
+  docs:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
           name: run doc tests
           command: RUN=ci make ci-docs
 
-  coala:
-    docker:
-      - image: coala/base:0.11
-
-    working_directory: ~/repo
-
+  test:
+    <<: *defaults
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: Run coala
-          command: coala --ci
+          name: run unit tests
+          command: make ci-tests
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
 
 workflows:
   version: 2
   gates:
     jobs:
-      - coala
-      - build
+      - prepare
+      - format:
+          requires:
+            - prepare
+      - lint:
+          requires:
+            - prepare
+      - docs:
+          requires:
+            - prepare
+      - test:
+          requires:
+            - prepare
