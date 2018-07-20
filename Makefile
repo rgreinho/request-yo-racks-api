@@ -48,7 +48,7 @@ build-docker: ## Build the docker image
 	@docker build -t $(DOCKER_IMG) -f $(DOCKERFILE) .
 
 .PHONY: ci
-ci: ci-linters ci-tests ci-docs ## Run all CI targets at once
+ci: ci-format ci-linters ci-tests ci-docs ## Run all CI targets at once
 
 .PHONY: ci-docs
 ci-docs: ## Ensure the documentation builds
@@ -60,6 +60,7 @@ ci-format: ## Check the code formatting using YAPF
 
 .PHONY: ci-linters
 ci-linters: ## Run the static analyzers
+	$(RUN_CMD) tox -e flake8,pydocstyle,pylint
 
 .PHONY: ci-tests
 ci-tests: ## Run the unit tests
