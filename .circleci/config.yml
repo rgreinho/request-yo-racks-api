@@ -12,18 +12,20 @@ jobs:
       - restore_cache:
           keys: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
       - run:
-          name: install dependencies
+          name: prepare environment
           command: make venv
       - save_cache:
           paths:
             - ./venv
           key: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
       - persist_to_workspace:
-          root: ~/project
+          root: .
+          path: venv
 
   format:
     <<: *defaults
     steps:
+      - checkout
       - attach_workspace:
           at: ~/project
       - run:
@@ -33,6 +35,7 @@ jobs:
   lint:
     <<: *defaults
     steps:
+      - checkout
       - attach_workspace:
           at: ~/project
       - run:
@@ -42,15 +45,17 @@ jobs:
   docs:
     <<: *defaults
     steps:
+      - checkout
       - attach_workspace:
           at: ~/project
       - run:
           name: run doc tests
-          command: RUN=ci make ci-docs
+          command: make ci-docs
 
   test:
     <<: *defaults
     steps:
+      - checkout
       - attach_workspace:
           at: ~/project
       - run:
