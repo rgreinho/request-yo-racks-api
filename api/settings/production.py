@@ -1,3 +1,4 @@
+"""Define the django settings for a production setup."""
 import os
 
 from .base import *  # noqa

@@ -1,9 +1,8 @@
 """Define all the collectors."""
 
 import abc
-import urllib.parse
-
 from dataclasses import dataclass
+import urllib.parse
 
 import googlemaps  # pylint: disable=import-error
 import requests
@@ -368,6 +367,6 @@ class CollectorClient:
         :returns: A dictionnary containing the detailed information of the place matching the `place_id`.
         :rtype: dict
         """
-        _ = self.collector.retrieve_place_details(place_id)
+        self.collector.retrieve_place_details(place_id)
         b = self.collector.to_business_info()
         return self.collector.to_business_info().__dict__ if b else {}
