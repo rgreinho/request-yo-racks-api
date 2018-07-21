@@ -19,7 +19,7 @@ jobs:
             - ./venv
           key: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
       - persist_to_workspace:
-          root: .
+          root: ~/project
           path: venv/*
 
   format:
