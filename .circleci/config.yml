@@ -20,7 +20,7 @@ jobs:
           key: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
       - persist_to_workspace:
           root: ~/project
-          path: venv/*
+          paths: venv/*
 
   format:
     <<: *defaults
