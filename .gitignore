@@ -16,3 +16,4 @@ docs/build/
 htmlcov/
 test-results/
 venv/
+.vscode

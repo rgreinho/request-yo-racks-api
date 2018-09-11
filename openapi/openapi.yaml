@@ -1,0 +1,211 @@
+openapi: "3.0.2"
+
+info:
+  title: "Request Yo Racks API"
+  description: "Backend API for the RYR project."
+  version: "1.0.0"
+  contact:
+    name: "Request Yo Racks API"
+    url: "https://api.requestyoracks.org"
+    email: "info@requestyoracks.org"
+  license:
+    name: "CC Attribution 4.0 (CC BY 4.0)"
+    url: "https://creativecommons.org/licenses/by/4.0/legalcode"
+
+servers:
+  - url: "https://api.requestyoracks.org/{basePath}"
+    variables:
+      basePath:
+        default: "1.0"
+
+paths:
+  /health:
+    get:
+      tags:
+        - heatlh
+      summary: "Check the health of the backend."
+      description: "Returns a 200 and some basic information about the status of the API server."
+      responses:
+        200:
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/status"
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          description: Error response.
+  /place:
+    post:
+      tags:
+        - place
+      summary: "Collect detailled information about a business"
+      description: "Collect very detailled information about a specific businesses. Several collectors will be queried and the results will be combined into the reponse of this endpoint."
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/place_summary'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/business_info'
+        default:
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+          description: Error response.
+  /places:
+    get:
+      tags:
+        - places
+      summary: "Collect basic information about the businesses"
+      description: "Collect basic information about businesses in a certain radius of a specific location."
+      parameters:
+        - name: location
+          in: query
+          description: "**Latitude and longitude**. *Example: 30.318673580117846,-97.72446155548096*. The latitude,longitude cordinate of the location of your interest."
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/places'
+        default:
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+          description: Error response.
+components:
+  schemas:
+    business_info:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Business name
+          example: Google
+        address:
+          type: string
+          description: Business address
+          example: '5, 48 Pirrama Rd, Pyrmont NSW 2009, Australia'
+        latitude:
+          type: number
+          format: double
+          description: City geo location, latitude
+          example: -33.866651
+        longitude:
+          type: number
+          format: double
+          description: City geo location, longitude
+          example: 151.195827
+        type:
+          type: string
+          description: Business type
+          example: coorporation
+        phone:
+          type: string
+          description: Business phone number
+          example: '(02) 9374 4000'
+        email:
+          type: string
+          description: Business email
+          example: info_au@google.com
+        contact_name:
+          type: string
+          description: Contact name
+          example: John Doe
+        website:
+          type: string
+          description: Business website
+          example: 'https://www.google.com.au/about/careers/locations/sydney/'
+        parking_info:
+          type: string
+          description: Describe the current parking situation of the business
+          example: '5 car parking spots, no bike rack.'
+        extra_info:
+          type: string
+          description: Additional information
+          example: 'Dockless scooters are often parked nearby.'
+        weight:
+          type: integer
+          format: int32
+          description: Confidence level in the collected information (lowest is best)
+          example: 0
+    error:
+      description: An error response from the RYR API
+      properties:
+        error:
+          description: A description of the error.
+          properties:
+            message:
+              description: A human-readable message providing more details about the
+                error. For card errors, these messages can be shown to your users.
+              maxLength: 40000
+              type: string
+          required:
+           - message
+          title: APIErrors
+          type: object
+          x-expandableFields:
+            - source
+      required:
+        - error
+      type: object
+    place_summary:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Business name
+          example: Google
+        address:
+          type: string
+          description: Business address
+          example: '5, 48 Pirrama Rd, Pyrmont NSW 2009, Australia'
+        id:
+          type: string
+          description: Business ID, specific to a particular collector
+          example: ChIJyWEHuEmuEmsRm9hTkapTCrk
+    place:
+      type: object
+      description: A list of the closest businesses to the geolocation.
+      properties:
+        name:
+          type: string
+          description: Business name
+          example: Google
+        latitude:
+          type: number
+          format: double
+          description: City geolocation, latitude
+          example: -33.866651
+        longitude:
+          type: number
+          format: double
+          description: City geolocation, longitude
+          example: 151.195827
+    places:
+      type: array
+      items:
+        $ref: "#/components/schemas/place"
+    status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: API server status.
+          example: Healthy
