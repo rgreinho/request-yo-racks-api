@@ -1,6 +1,6 @@
 """Test the yelp module."""
-
 import json
+from unittest.mock import Mock
 
 from faker import Faker
 import requests
@@ -18,8 +18,9 @@ class TestYelpCollector():
     def test_search_places_00(self, mocker):
         """Ensure the search returns a dictionary."""
         yelp = YelpCollector()
-
-        mocker.patch.object(requests.Response, 'json', return_value=YELP_SEARCH_RESPONSE)
+        response = requests.Response()
+        response.json = Mock(return_value=YELP_SEARCH_RESPONSE)
+        mocker.patch.object(requests, 'get', return_value=response)
         search_results = yelp.search_places(self.fake.address(), terms=self.fake.pystr())
 
         assert type(search_results) is dict
@@ -27,17 +28,23 @@ class TestYelpCollector():
     def test_search_places_01(self, mocker):
         """Ensure the search returns a dictionary."""
         yelp = YelpCollector()
-
-        mocker.patch.object(requests.Response, 'json', return_value=YELP_SEARCH_RESPONSE)
-        search_results = yelp.search_places(self.fake.address(), terms=self.fake.pystr(), limit=self.fake.pyint())
+        response = requests.Response()
+        response.json = Mock(return_value=YELP_SEARCH_RESPONSE)
+        mocker.patch.object(requests, 'get', return_value=response)
+        search_results = yelp.search_places(
+            self.fake.address(),
+            terms=self.fake.pystr(),
+            limit=self.fake.pyint(),
+        )
 
         assert type(search_results) is dict
 
     def test_retrieve_place_details_00(self, mocker):
         """Ensure retrieve_place_details returns a dictionary."""
         yelp = YelpCollector()
-
-        mocker.patch.object(requests.Response, 'json', return_value=YELP_DETAILS_RESPONSE)
+        response = requests.Response()
+        response.json = Mock(return_value=YELP_DETAILS_RESPONSE)
+        mocker.patch.object(requests, 'get', return_value=response)
         details_results = yelp.get_place_details(self.fake.pystr())
 
         assert type(details_results) is dict
@@ -46,8 +53,10 @@ class TestYelpCollector():
         """Ensure retrieve_place_details returns a dictionary."""
         yelp = YelpCollector()
 
-        mocker.patch.object(requests.Response, 'json', return_value=YELP_DETAILS_RESPONSE)
-        _ = yelp.get_place_details(self.fake.pystr())
+        response = requests.Response()
+        response.json = Mock(return_value=YELP_DETAILS_RESPONSE)
+        mocker.patch.object(requests, 'get', return_value=response)
+        yelp.get_place_details(self.fake.pystr())
         actual = yelp.to_business_info()
         expected = BusinessInfo(
             name='Gary Danko',

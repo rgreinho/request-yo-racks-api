@@ -12,6 +12,7 @@ logger = get_task_logger(__name__)
 register('json_tricks.nonp', dumps, loads, content_type='application/x-json-tricks', content_encoding='utf-8')
 
 # Global configuration.
+accept_content = ['application/x-json-tricks']
 accept_content = ['application/json', 'application/x-json-tricks']
 imports = ('api.celery.tasks', )
 timezone = 'America/Chicago'

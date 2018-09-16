@@ -53,7 +53,7 @@ class GoogleCollector(AbstractClientCollector):
         :param str location: The latitude/longitude value for which you wish to obtain the
             closest, human-readable address. Can be a string, dict, list, or tuple.
         """
-        radius = kwargs.get('radius', 10)
+        radius = kwargs.get('radius', 250)
         self.search_results = self.gmaps.places_nearby(location=location, radius=radius, **kwargs)
         return self.search_results
 
