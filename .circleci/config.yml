@@ -1,7 +1,13 @@
+working_directory: &working_directory
+  ~/project
+
 defaults: &defaults
   docker:
     - image: circleci/python:3.7.0-stretch-node
-  working_directory: ~/project
+  working_directory: *working_directory
+
+repo_cache_key: &repo_cache_key
+  deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
 
 version: 2
 jobs:
@@ -10,16 +16,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          keys: *repo_cache_key
       - run:
           name: prepare environment
           command: make venv
       - save_cache:
           paths:
             - ./venv
-          key: deps-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: *repo_cache_key
       - persist_to_workspace:
-          root: ~/project
+          root: *working_directory
           paths: venv/*
 
   format:
@@ -27,7 +33,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/project
+          at: *working_directory
       - run:
           name: check formatter
           command: make ci-format
@@ -37,7 +43,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/project
+          at: *working_directory
       - run:
           name: run linters
           command: make ci-linters
@@ -47,7 +53,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/project
+          at: *working_directory
       - run:
           name: run doc tests
           command: make ci-docs
@@ -57,7 +63,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/project
+          at: *working_directory
       - run:
           name: run unit tests
           command: make ci-tests
