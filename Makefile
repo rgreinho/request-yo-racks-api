@@ -176,6 +176,7 @@ venv: venv/bin/activate ## Setup local venv
 venv/bin/activate: requirements.txt
 	test -d venv || python3 -m venv venv || virtualenv --no-setuptools --no-wheel -p python3 venv
 	. venv/bin/activate \
+		&& pip install --upgrade pip \
 		&& pip install -r requirements-dev.txt \
 		&& pip install -e .
 

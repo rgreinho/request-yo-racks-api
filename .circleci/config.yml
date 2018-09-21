@@ -66,10 +66,11 @@ jobs:
           at: *working_directory
       - run:
           name: run unit tests
-          command: make ci-tests
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          command: |
+            make ci-tests
+            bash <(curl -s https://codecov.io/bash)
+      - store_test_results:
+          path: test-results
 
 workflows:
   version: 2

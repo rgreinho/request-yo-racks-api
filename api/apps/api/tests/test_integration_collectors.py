@@ -103,7 +103,7 @@ def integration_test_full_google_yelp_workflow_with_generic():
 
     # Simulate a click Epoch Coffee Shop - Northloop on the map.
     epoch_latlong = (30.3186037, -97.72454019999999)
-
+    epoch_latlong = (30.319136, -97.724303)
     # Retrieve the places nearby the location clicked on the map.
     gmap = GoogleCollector()
     gmap.authenticate(api_key=places_api_key)
