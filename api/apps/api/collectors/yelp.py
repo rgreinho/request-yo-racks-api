@@ -41,6 +41,8 @@ class YelpCollector(AbstractRestCollector):
 
         # Query the server.
         response = requests.get(url, headers=self.headers)
+        if response.status_code != 200:
+            response.raise_for_status()
         self.result = response.json()
 
         return self.result

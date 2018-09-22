@@ -1,4 +1,5 @@
 """Test the Celery tasks."""
+import dataclasses
 import os
 from unittest.mock import Mock
 
@@ -8,6 +9,7 @@ from faker import Faker
 import googlemaps
 import pytest
 import requests
+import responses
 
 from api.celery import tasks
 from api.apps.api.collectors.base import BusinessInfo
@@ -59,8 +61,9 @@ class TestCeleryTasks:
         )
         task = tasks.collect_place_details_from_google.s(self.fake.pystr()).apply()
         assert task.successful()
-        assert task.result == google_info
+        assert dataclasses.asdict(task.result) == google_info
 
+    @responses.activate
     def test_collect_place_details_from_yelp_00(self, mocker):
         """Ensure data are retrieved from Yelp."""
         yelp_info = {
@@ -83,21 +86,29 @@ class TestCeleryTasks:
                 'RYR_COLLECTOR_YELP_API_KEY': self.fake.pystr(),
             },
         )
-        mocker.patch.object(YelpCollector, 'search_places', return_value=YELP_SEARCH_RESPONSE)
-        response = requests.Response()
-        response.json = Mock(return_value=YELP_DETAILS_RESPONSE)
-        mocker.patch.object(requests, 'get', return_value=response)
+        responses.add(
+            responses.GET,
+            'https://api.yelp.com/v3/businesses/search',
+            json=YELP_SEARCH_RESPONSE,
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            'https://api.yelp.com/v3/businesses/four-barrel-coffee-san-francisco',
+            json=YELP_DETAILS_RESPONSE,
+            status=200,
+        )
         task = tasks.collect_place_details_from_yelp.s(
             self.fake.pystr(),
             self.fake.pystr(),
         ).apply()
         assert task.successful()
-        assert task.result == yelp_info
+        assert dataclasses.asdict(task.result) == yelp_info
 
     def test_combine_collector_results_00(self):
         """Ensure results are combined correctly."""
-        b0 = BusinessInfo(name='name1'),
-        b1 = BusinessInfo(address='address2'),
+        b0 = BusinessInfo(name='name1')
+        b1 = BusinessInfo(address='address2')
         b2 = BusinessInfo(name='name1', address='address2')
         task = tasks.combine_collector_results.s([b0, b1]).apply()
         assert task.successful()

@@ -8,7 +8,7 @@ set -eo pipefail
 : ${RYR_API_API_PORT:=8000}
 
 # Define Celery variables.
-: ${RYR_API_CELERY_APP:=api.celery}
+: ${RYR_API_CELERY_APP:=api.celery.worker}
 
 # Compute variables.
 DATE=$(date -u +%Y%m%dT%H%M%S%Z)

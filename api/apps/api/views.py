@@ -1,4 +1,5 @@
 """Define the API views."""
+import dataclasses
 import logging
 import os
 
@@ -52,8 +53,11 @@ class PlaceDetails(APIView):
     """View to provide detailed information about a specific place."""
 
     # pylint: disable=redefined-builtin,unused-argument
-    def get(self, request, pid, format=None):
+    def post(self, request, format=None):
         """Return the detailed information about a specific place."""
-        place_id, name, address = pid.split(',')
-        result = collect_place_details(place_id, name, address)
-        return Response(result.get())
+        result = collect_place_details(
+            request.data['place_id'],
+            request.data['name'],
+            request.data['address'],
+        )
+        return Response(dataclasses.asdict(result))

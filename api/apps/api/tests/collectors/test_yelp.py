@@ -43,6 +43,7 @@ class TestYelpCollector():
         """Ensure retrieve_place_details returns a dictionary."""
         yelp = YelpCollector()
         response = requests.Response()
+        response.status_code = 200
         response.json = Mock(return_value=YELP_DETAILS_RESPONSE)
         mocker.patch.object(requests, 'get', return_value=response)
         details_results = yelp.get_place_details(self.fake.pystr())
@@ -54,6 +55,7 @@ class TestYelpCollector():
         yelp = YelpCollector()
 
         response = requests.Response()
+        response.status_code = 200
         response.json = Mock(return_value=YELP_DETAILS_RESPONSE)
         mocker.patch.object(requests, 'get', return_value=response)
         yelp.get_place_details(self.fake.pystr())
@@ -73,6 +75,15 @@ class TestYelpCollector():
             weight=0)
 
         assert actual == expected
+
+    def test_retrieve_place_details_02(self, mocker):
+        """Ensure retrieve_place_details raises an exception if status is not 200."""
+        yelp = YelpCollector()
+        response = requests.Response()
+        response.status_code = 404
+        mocker.patch.object(requests, 'get', return_value=response)
+        with pytest.raises(requests.exceptions.HTTPError):
+            yelp.get_place_details(self.fake.pystr())
 
     def test_search_places_nearby_00(self):
         """Ensure the search_nearby fucntion raise `NotImplementedError`."""
@@ -267,3 +278,10 @@ YELP_DETAILS_RESPONSE_JSON = """
 }
 """
 YELP_DETAILS_RESPONSE = json.loads(YELP_DETAILS_RESPONSE_JSON)
+
+YELP_ERROR = {
+    'error': {
+        'code': 'BUSINESS_NOT_FOUND',
+        'description': 'The requested business could not be found.',
+    }
+}
