@@ -10,7 +10,9 @@ api.egg-info
 api/staticfiles/
 build/
 celerybeat-schedule
+coverage.xml
 dist/
 docs/build/
 htmlcov/
+test-results/
 venv/

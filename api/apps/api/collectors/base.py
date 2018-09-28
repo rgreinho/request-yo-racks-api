@@ -37,6 +37,11 @@ class BusinessInfo:
         :return: A BusinessInfo with de data merged by weight, and a new weight of 0.
         :rtype: BusinessInfo
         """
+        # Do not try to merge objects of different types.
+        if not isinstance(other, BusinessInfo):
+            return self
+
+        # Merge attribute per attribute.
         merged = BusinessInfo()
         for key in self.__dict__:
             # Ignore the 'weight' property.

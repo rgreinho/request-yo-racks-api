@@ -165,7 +165,7 @@ local-django-api: ## Run Django locally
 		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
 		&& export RYR_API_API_OPTS="--reload --timeout 1800" \
 		&& export RYR_LOG_LEVEL=info \
-		&& eval $$(tools/kubernetes-django-env-vars.sh) \
+		&& eval $$(tools/kubernetes-local-env-vars.sh) \
 		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh api
 
 .PHONY: setup
@@ -177,6 +177,7 @@ venv/bin/activate: requirements.txt
 	test -d venv || python3 -m venv venv || virtualenv --no-setuptools --no-wheel -p python3 venv
 	. venv/bin/activate \
 		&& pip install --upgrade pip \
+		&& pip install -U -r requirements.txt \
 		&& pip install -r requirements-dev.txt \
 		&& pip install -e .
 

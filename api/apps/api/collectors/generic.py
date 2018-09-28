@@ -62,7 +62,7 @@ class CollectorClient:
         """
         self.collector.get_place_details(place_id)
         b = self.collector.to_business_info()
-        return self.collector.to_business_info().__dict__ if b else {}
+        return b
 
     def retrieve_search_summary(self, index=0):
         """

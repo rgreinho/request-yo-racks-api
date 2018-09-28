@@ -2,8 +2,9 @@
 from faker import Faker
 import pytest
 
-from api.apps.api.collectors.base import BusinessInfo
 from api.apps.api.collectors.base import AbstractCollector
+from api.apps.api.collectors.base import BusinessInfo
+from api.apps.api.collectors.base import PlaceSearchSummary
 
 
 class TestBusinessInfo:
@@ -41,11 +42,20 @@ class TestBusinessInfo:
             BusinessInfo(address='address2', weight=2),
             BusinessInfo(name='name1', address='address2'),
         ), 'Ensure objects with the less weight overwrites properties.'),
+        ((
+            BusinessInfo(name='name1', weight=3),
+            PlaceSearchSummary(),
+            BusinessInfo(name='name1', weight=3),
+        ), 'Ensure objects of different types don\'t merge'),
     ]
 
-    # Lambdas to parse the scenarios and feed the data to the test functions.
-    scenario_inputs = lambda scenarios: [test_input[0] for test_input in scenarios]
-    scenario_ids = lambda scenarios: [test_input[1] for test_input in scenarios]
+    def scenario_inputs(scenarios):
+        """Parse the scenarios and feed the data to the test function."""
+        return [test_input[0] for test_input in scenarios]
+
+    def scenario_ids(scenarios):
+        """Parse the scenarios and feed the IDs to the test function."""
+        return [test_input[1] for test_input in scenarios]
 
     def test_geolocation_00(self):
         """Ensure geolocation is computed properly for default objects."""

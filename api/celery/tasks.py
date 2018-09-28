@@ -39,20 +39,19 @@ def collect_place_details_from_yelp(name, address):
 
     # Retrieve detailed results.
     client.search_places(address, terms=name, limit=1)
-    place_id = client.retrieve_search_summary(0)
+    place_summary = client.retrieve_search_summary(0)
 
     # Extract the place_id.
-    details = client.get_place_details(place_id)
+    details = client.get_place_details(place_summary.id)
     return details
 
 
 @app.task(ignore_result=False)
 def combine_collector_results(collector_results):
     """Combine the results provided by several collectors."""
-    # No idea why `collector_results` becomes a list of tuples of `BusinessInfo` !?!?!
     c = BusinessInfo()
     for collector_result in collector_results:
-        c = c.merge(collector_result[0])
+        c = c.merge(collector_result)
 
     return c
 
@@ -60,7 +59,9 @@ def combine_collector_results(collector_results):
 def collect_place_details(place_id, name, address):
     """Collect the details of a specific place from all the provider."""
     callback = combine_collector_results.s()
-    collect_place_details_from_google.s(place_id)
-    header = [collect_place_details_from_yelp.s(name, address)]
+    header = [
+        collect_place_details_from_google.s(place_id),
+        collect_place_details_from_yelp.s(name, address),
+    ]
     result = chord(header)(callback)
-    return result
+    return result.get()
