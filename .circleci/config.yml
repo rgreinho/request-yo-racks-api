@@ -69,6 +69,8 @@ jobs:
           command: |
             make ci-tests
             bash <(curl -s https://codecov.io/bash)
+            venv/bin/pip install coveralls
+            venv/bin/coveralls
       - store_test_results:
           path: test-results
 

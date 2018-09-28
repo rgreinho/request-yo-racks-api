@@ -1,6 +1,9 @@
 Request-Yo-Racks REST API
 =========================
 
+.. image:: https://coveralls.io/repos/github/request-yo-racks/api/badge.svg?branch=master
+  :target: https://coveralls.io/github/request-yo-racks/api?branch=master
+
 A REST API for Request-Yo-Racks.
 
 .. attention::
