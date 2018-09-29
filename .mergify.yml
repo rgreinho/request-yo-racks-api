@@ -5,6 +5,11 @@ rules:
         required_approving_review_count: 1
       required_status_checks:
         contexts:
-        - 'ci/circleci: coala'
-        - 'ci/circleci: build'
-        - review/gitmate
+        - 'ci/circleci: docs'
+        - 'ci/circleci: format'
+        - 'ci/circleci: format'
+        - 'ci/circleci: lint'
+        - 'ci/circleci: prepare'
+        - 'ci/circleci: test'
+        - coverage/coveralls
+        - review/gitmate/pr
