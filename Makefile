@@ -17,7 +17,7 @@ DOCKER_REPO = $(DOCKER_ORG)/$(PROJECT_NAME)
 DOCKER_IMG = $(DOCKER_REPO):$(TAG)
 
 # Chart.
-CHART_REPO = /Users/remy/projects/request-yo-racks/charts/charts
+CHART_REPO = ${RYR_PROJECT_DIR}/charts/charts
 CHART_NAME = $(CHART_REPO)/$(PROJECT_NAME)
 
 # Run commands.
