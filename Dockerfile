@@ -4,7 +4,7 @@ MAINTAINER Rémy Greinhofer <remy.greinhofer@requestyoracks.org>
 # Update the package list.
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    git \
+  git \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -15,7 +15,8 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Build the packages.
-RUN python setup.py bdist_wheel
+RUN rm -fr dist \
+  && python setup.py bdist_wheel
 
 ###
 # Create the release image.

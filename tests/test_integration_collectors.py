@@ -1,9 +1,9 @@
 import json
 import os
 
-from api.apps.api.collectors.generic import CollectorClient
-from api.apps.api.collectors.google import GoogleCollector
-from api.apps.api.collectors.base import PlaceSearchSummary
+from api.collectors.generic import CollectorClient
+from api.collectors.google import GoogleCollector
+from api.collectors.base import PlaceSearchSummary
 
 
 def integration_test_yelp_search_place():
@@ -36,7 +36,7 @@ def integration_test_yelp_retrieve_place_details():
         '221 West North Loop Boulevard, Austin',
     )
     place_details = client.retrieve_place_details(
-        epoch_search_summary.id,
+        epoch_search_summary.place_id,
         epoch_search_summary.name,
         epoch_search_summary.address,
     )
@@ -89,7 +89,7 @@ def integration_test_full_google_yelp_workflow():
     yelp = CollectorClient('yelp', api_key=yelp_api_key)
     yelp.authenticate()
     place_details = yelp.retrieve_place_details(
-        epoch_search_summary.id,
+        epoch_search_summary.place_id,
         epoch_search_summary.name,
         epoch_search_summary.address,
     )
@@ -116,7 +116,7 @@ def integration_test_full_google_yelp_workflow_with_generic():
     # Lookup the place on Google Maps.
     google = CollectorClient('google', api_key=places_api_key)
     google.authenticate()
-    google_place_details = google.lookup_place(epoch_search_summary.id)
+    google_place_details = google.lookup_place(epoch_search_summary.place_id)
     gb = google.to_business_info()
     print('*** Google:')
     print(gb)

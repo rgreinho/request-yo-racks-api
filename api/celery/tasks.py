@@ -4,8 +4,8 @@ import os
 from celery import chord
 from celery.utils.log import get_task_logger
 
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.generic import CollectorClient
+from api.collectors.base import BusinessInfo
+from api.collectors.generic import CollectorClient
 from api.celery.worker import app
 
 logger = get_task_logger(__name__)
@@ -41,8 +41,11 @@ def collect_place_details_from_yelp(name, address):
     client.search_places(address, terms=name, limit=1)
     place_summary = client.retrieve_search_summary(0)
 
+    if not place_summary:
+        raise ValueError('Yelp did not return any result.')
+
     # Extract the place_id.
-    details = client.get_place_details(place_summary.id)
+    details = client.get_place_details(place_summary.place_id)
     return details
 
 

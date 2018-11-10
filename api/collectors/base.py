@@ -87,7 +87,7 @@ class BusinessInfo:
 class PlaceSearchSummary:
     """Define Place Search Summary information."""
 
-    id: str = ''
+    place_id: str = ''
     name: str = ''
     address: str = ''
 

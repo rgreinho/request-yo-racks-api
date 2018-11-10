@@ -2,9 +2,9 @@
 
 import googlemaps
 
-from api.apps.api.collectors.base import AbstractClientCollector
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.base import PlaceSearchSummary
+from api.collectors.base import AbstractClientCollector
+from api.collectors.base import BusinessInfo
+from api.collectors.base import PlaceSearchSummary
 
 
 class GoogleCollector(AbstractClientCollector):
@@ -94,7 +94,7 @@ class GoogleCollector(AbstractClientCollector):
         search_summary = PlaceSearchSummary()
         business = self.search_results.get('results')[index]
 
-        search_summary.id = business.get('place_id', '')
+        search_summary.place_id = business.get('place_id', '')
         search_summary.name = business.get('name', '')
         search_summary.address = business.get('vicinity', '')
 

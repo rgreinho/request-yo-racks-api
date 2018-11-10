@@ -3,8 +3,8 @@
 from faker import Faker
 import pytest
 
-from api.apps.api.collectors.base import PlaceSearchSummary
-from api.apps.api.collectors.generic import CollectorClient
+from api.collectors.base import PlaceSearchSummary
+from api.collectors.generic import CollectorClient
 
 
 class TestCollectorClient:
@@ -83,7 +83,7 @@ class TestCollectorClient:
         fake_address = self.fake.address()
         c = CollectorClient(self.fake.pystr())
         c.search_places = mocker.Mock()
-        c.retrieve_search_summary = mocker.Mock(return_value=PlaceSearchSummary(id=fake_place_id))
+        c.retrieve_search_summary = mocker.Mock(return_value=PlaceSearchSummary(place_id=fake_place_id))
         c.get_place_details = mocker.Mock()
 
         c.lookup_place(name=fake_name, address=fake_address)
