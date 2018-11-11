@@ -1,6 +1,7 @@
 git+https://github.com/celery/celery.git@master#egg=celery
 Pygments==2.2.0
 connexion[swagger-ui]==2.0.1
+flask-cors==3.0.7
 googlemaps==3.0.2
 gunicorn==19.9.0
 json-tricks==3.12.2
