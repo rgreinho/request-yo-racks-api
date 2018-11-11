@@ -176,7 +176,7 @@ components:
           type: string
           description: Business address
           example: '5, 48 Pirrama Rd, Pyrmont NSW 2009, Australia'
-        id:
+        place_id:
           type: string
           description: Business ID, specific to a particular collector
           example: ChIJyWEHuEmuEmsRm9hTkapTCrk

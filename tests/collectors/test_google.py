@@ -6,9 +6,9 @@ import googlemaps
 from faker import Faker
 import pytest
 
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.base import PlaceSearchSummary
-from api.apps.api.collectors.google import GoogleCollector
+from api.collectors.base import BusinessInfo
+from api.collectors.base import PlaceSearchSummary
+from api.collectors.google import GoogleCollector
 
 
 @pytest.fixture()
@@ -113,7 +113,7 @@ class TestGoogleCollector():
         gmaps.search_results = GOOGLE_MAPS_SEARCH_RESPONSE
         actual = gmaps.retrieve_search_summary()
         expected = PlaceSearchSummary(
-            id='ChIJyWEHuEmuEmsRm9hTkapTCrk',
+            place_id='ChIJyWEHuEmuEmsRm9hTkapTCrk',
             name='Rhythmboat Cruises',
             address='Pyrmont Bay Wharf Darling Dr, Sydney',
         )

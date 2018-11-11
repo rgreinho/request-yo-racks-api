@@ -6,9 +6,9 @@ from faker import Faker
 import requests
 import pytest
 
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.base import PlaceSearchSummary
-from api.apps.api.collectors.yelp import YelpCollector
+from api.collectors.base import BusinessInfo
+from api.collectors.base import PlaceSearchSummary
+from api.collectors.yelp import YelpCollector
 
 
 class TestYelpCollector():
@@ -125,7 +125,7 @@ class TestYelpCollector():
         yelp.search_results = YELP_SEARCH_RESPONSE
         actual = yelp.retrieve_search_summary()
         expected = PlaceSearchSummary(
-            id='four-barrel-coffee-san-francisco',
+            place_id='four-barrel-coffee-san-francisco',
             name='Four Barrel Coffee',
             address='',
         )

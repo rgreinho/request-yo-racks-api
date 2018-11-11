@@ -1,19 +1,12 @@
 [run]
 omit =
   *__init__.py
-  api/apps/api/models.py
-  api/apps/api/serializers.py
-  api/apps/api/tests/*
-  api/apps/api/urls.py
-  api/apps/api/views.py
   api/celery/celery.py
   api/celery/celery_settings.py
-  api/celery/tests/*
+  api/connexion_*
+  api/controller/*
   api/settings/*
-  api/static.py
-  api/urls.py
   api/wsgi.py
-
 
 [report]
 fail_under = 90.0

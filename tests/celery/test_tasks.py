@@ -12,13 +12,13 @@ import requests
 import responses
 
 from api.celery import tasks
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.base import PlaceSearchSummary
-from api.apps.api.collectors.generic import CollectorClient
-from api.apps.api.collectors.yelp import YelpCollector
-from api.apps.api.tests.collectors.test_google import GOOGLE_MAPS_DETAILS_RESPONSE
-from api.apps.api.tests.collectors.test_yelp import YELP_DETAILS_RESPONSE
-from api.apps.api.tests.collectors.test_yelp import YELP_SEARCH_RESPONSE
+from api.collectors.base import BusinessInfo
+from api.collectors.base import PlaceSearchSummary
+from api.collectors.generic import CollectorClient
+from api.collectors.yelp import YelpCollector
+from tests.collectors.test_google import GOOGLE_MAPS_DETAILS_RESPONSE
+from tests.collectors.test_yelp import YELP_DETAILS_RESPONSE
+from tests.collectors.test_yelp import YELP_SEARCH_RESPONSE
 
 
 class TestCeleryTasks:

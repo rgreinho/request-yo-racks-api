@@ -15,12 +15,6 @@ DATE=$(date -u +%Y%m%dT%H%M%S%Z)
 
 # Run the API.
 if [ "$1" == "api" ]; then
-  # Prepare the static files.
-  django-admin collectstatic --noinput
-
-  # Migrate db, so we have the latest db schema.
-  django-admin migrate
-
   # Start WSGI server.
   exec gunicorn ${RYR_API_API_OPTS} --log-level ${RYR_LOG_LEVEL} -b 0.0.0.0:${RYR_API_API_PORT} api.wsgi
 fi

@@ -4,14 +4,14 @@ collectors package
 Base collectors module
 ----------------------
 
-.. automodule:: api.apps.api.collectors.base
+.. automodule:: api.collectors.base
     :members:
     :show-inheritance:
 
 Generic collectors module
 -------------------------
 
-.. automodule:: api.apps.api.collectors.generic
+.. automodule:: api.collectors.generic
     :members:
     :undoc-members:
     :show-inheritance:
@@ -19,7 +19,7 @@ Generic collectors module
 Google collectors module
 ------------------------
 
-.. automodule:: api.apps.api.collectors.google
+.. automodule:: api.collectors.google
     :members:
     :undoc-members:
     :show-inheritance:
@@ -27,7 +27,7 @@ Google collectors module
 Yelp collectors module
 ----------------------
 
-.. automodule:: api.apps.api.collectors.yelp
+.. automodule:: api.collectors.yelp
     :members:
     :undoc-members:
     :show-inheritance:

@@ -2,9 +2,9 @@
 from faker import Faker
 import pytest
 
-from api.apps.api.collectors.base import AbstractCollector
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.base import PlaceSearchSummary
+from api.collectors.base import AbstractCollector
+from api.collectors.base import BusinessInfo
+from api.collectors.base import PlaceSearchSummary
 
 
 class TestBusinessInfo:
@@ -78,12 +78,12 @@ class TestBusinessInfo:
         """Ensure the object serializes to JSON correctly."""
         b = BusinessInfo(name='name1', address='address2')
         actual = b.to_json(indent=None)
-        expected = '{"__instance_type__": ["api.apps.api.collectors.base", "BusinessInfo"], "attributes": {"address": "address2", "contact_name": "", "email": "", "extra_info": "", "latitude": 0.0, "longitude": 0.0, "name": "name1", "parking_info": "", "phone": "", "type": "", "website": "", "weight": 0}}'
+        expected = '{"__instance_type__": ["api.collectors.base", "BusinessInfo"], "attributes": {"address": "address2", "contact_name": "", "email": "", "extra_info": "", "latitude": 0.0, "longitude": 0.0, "name": "name1", "parking_info": "", "phone": "", "type": "", "website": "", "weight": 0}}'
         assert actual == expected
 
     def test_from_json_00(self):
         """Ensure the object get deserialized from JSON correctly."""
-        json_object = '{"__instance_type__": ["api.apps.api.collectors.base", "BusinessInfo"], "attributes": {"address": "address2", "contact_name": "", "email": "", "extra_info": "", "latitude": 0.0, "longitude": 0.0, "name": "name1", "parking_info": "", "phone": "", "type": "", "website": "", "weight": 0}}'
+        json_object = '{"__instance_type__": ["api.collectors.base", "BusinessInfo"], "attributes": {"address": "address2", "contact_name": "", "email": "", "extra_info": "", "latitude": 0.0, "longitude": 0.0, "name": "name1", "parking_info": "", "phone": "", "type": "", "website": "", "weight": 0}}'
         actual = BusinessInfo.from_json(json_object)
         expected = BusinessInfo(name='name1', address='address2')
         assert actual == expected

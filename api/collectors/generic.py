@@ -1,7 +1,7 @@
 """Defines a generic client for the collectors."""
 
-from api.apps.api.collectors.google import GoogleCollector
-from api.apps.api.collectors.yelp import YelpCollector
+from api.collectors.google import GoogleCollector
+from api.collectors.yelp import YelpCollector
 
 
 class CollectorClient:
@@ -106,7 +106,7 @@ class CollectorClient:
                 limit=1,
             )
             search_summary = self.retrieve_search_summary(0)
-            lookup_id = search_summary.id
+            lookup_id = search_summary.place_id
         else:
             lookup_id = place_id
         place_details = self.get_place_details(lookup_id)

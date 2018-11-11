@@ -1,19 +1,8 @@
-"""Define the django settings for a local setup."""
-from .base import *  # noqa
+"""Define the connexion settings for a local setup."""
+import os
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
+from api.settings.common import *  # noqa
+
 DEBUG = True
-TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'CHANGE THIS!!!'
-
-# Allow all host headers
-# SECURITY WARNING: don't run with this setting in production!
-# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['*']
-
-# CORS settings.
-# https://github.com/ottoyiu/django-cors-headers#cors_origin_allow_all
-CORS_ORIGIN_ALLOW_ALL = True
+environment_based_spec_dir = '/usr/local/etc/ryr-api' if os.environ.get('KUBERNETES_PORT') else 'openapi'
+SPECIFICATION_DIR = os.path.join(BASE_DIR, environment_based_spec_dir)

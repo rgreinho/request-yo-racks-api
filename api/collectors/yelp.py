@@ -3,9 +3,9 @@ import urllib.parse
 
 import requests
 
-from api.apps.api.collectors.base import AbstractRestCollector
-from api.apps.api.collectors.base import BusinessInfo
-from api.apps.api.collectors.base import PlaceSearchSummary
+from api.collectors.base import AbstractRestCollector
+from api.collectors.base import BusinessInfo
+from api.collectors.base import PlaceSearchSummary
 
 
 class YelpCollector(AbstractRestCollector):
@@ -114,7 +114,7 @@ class YelpCollector(AbstractRestCollector):
         search_summary = PlaceSearchSummary()
         business = self.search_results.get('businesses')[index]
 
-        search_summary.id = business.get('id', '')
+        search_summary.place_id = business.get('id', '')
         search_summary.name = business.get('name', '')
         search_summary.address = ' '.join(business.get('location', {}).get('display_address', ''))
 

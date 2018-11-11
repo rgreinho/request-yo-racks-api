@@ -31,10 +31,6 @@ else
   RUN_CMD = $(LOCAL_RUN_CMD)
 endif
 
-# Docker run Django parameters.
-DJANGO_MANAGE_CMD = python manage.py
-RUN_DJANGO_MANAGE_CMD = $(RUN_CMD) $(DJANGO_MANAGE_CMD)
-
 default: setup
 
 help: # Display help
@@ -80,24 +76,6 @@ clean-minikube: ## Remove all the Kubernetes objects associated to this project 
 .PHONY: clean-repo
 clean-repo: ## Remove unwanted files in project (!DESTRUCTIVE!)
 	@cd $(TOPDIR) && git clean -ffdx && git reset --hard
-
-.PHONY: django-migrate
-django-migrate: ## Run the Django migrations
-	@bash tools/kubernetes-django-manage.sh migrate
-
-.PHONY: django-make-migrations
-django-make-migrations: ## Prepare the Django migrations
-	@bash tools/kubernetes-django-manage.sh makemigrations
-
-.PHONY: django-shell
-django-shell: ## Run the Django Shell
-	@bash tools/kubernetes-django-manage.sh shell
-
-.PHONY: django-superuser
-django-superuser: ## Create the Django super user
-	@bash tools/kubernetes-django-manage.sh createsuperuser \
-		--username admin\
-		--email admin@requestyoracks.com
 
 .PHONY: deploy-minikube-api
 deploy-minikube-api: ## Deploy the API on Minikube
@@ -159,10 +137,10 @@ local-celery-worker: ## Start a local celery worker
 		&& eval $$(tools/kubernetes-local-env-vars.sh) \
 		&& $(LOCAL_RUN_CMD) docker/docker-entrypoint.sh celery worker
 
-.PHONY: local-django-api
-local-django-api: ## Run Django locally
+.PHONY: local-api
+local-api: ## Run connexion locally
 	source $(HOME)/.config/ryr/ryr-env.sh \
-		&& export DJANGO_SETTINGS_MODULE=api.settings.local \
+		&& export CONNEXION_SETTINGS_MODULE=api.settings.local \
 		&& export RYR_API_API_OPTS="--reload --timeout 1800" \
 		&& export RYR_LOG_LEVEL=info \
 		&& eval $$(tools/kubernetes-local-env-vars.sh) \
@@ -176,7 +154,7 @@ venv: venv/bin/activate ## Setup local venv
 venv/bin/activate: requirements.txt
 	test -d venv || python3 -m venv venv || virtualenv --no-setuptools --no-wheel -p python3 venv
 	. venv/bin/activate \
-		&& pip install --upgrade pip \
+		&& pip install --upgrade pip setuptools \
 		&& pip install -U -r requirements.txt \
 		&& pip install -r requirements-dev.txt \
 		&& pip install -e .
