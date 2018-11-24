@@ -1,54 +1,13 @@
 """Define utilities to create and configure a connexion app."""
 
 import os
-import sys
 
 import connexion
 from connexion.resolver import RestyResolver
+from flask_cors import CORS
+from werkzeug.utils import import_string
 
-
-def import_string(import_name):
-    """
-    Import an object based on a string.
-
-    This is useful if you want to
-    use import paths as endpoints or something similar.  An import path can
-    be specified either in dotted notation (``xml.sax.saxutils.escape``)
-    or with a colon as object delimiter (``xml.sax.saxutils:escape``).
-    If `silent` is True the return value will be `None` if the import fails.
-    :param import_name: the dotted name for the object to import.
-    :param silent: if set to `True` import errors are ignored and
-        `None` is returned instead.
-    :return: imported object
-    """
-    # force the import name to automatically convert to strings
-    # __import__ is not able to handle unicode strings in the fromlist
-    # if the module is a package
-    import_name = str(import_name).replace(':', '.')
-    try:
-        try:
-            __import__(import_name)
-        except ImportError:
-            if '.' not in import_name:
-                raise
-        else:
-            return sys.modules[import_name]
-
-        module_name, obj_name = import_name.rsplit('.', 1)
-        try:
-            module = __import__(module_name, None, None, [obj_name])
-        except ImportError:
-            # support importing modules not yet set up by the parent module
-            # (or package for that matter)
-            module = import_string(module_name)
-
-        try:
-            return getattr(module, obj_name)
-        except AttributeError as e:
-            raise ImportError(e)
-
-    except ImportError as e:
-        raise e
+from api.connexion_redoc import add_redoc_route
 
 
 def from_object(obj):
@@ -74,13 +33,8 @@ def from_object(obj):
     using :meth:`from_object`.
     :param obj: an import name or object
     """
-    d = {}
-    if isinstance(obj, str):
-        obj = import_string(obj)
-    for key in dir(obj):
-        if key.isupper():
-            d[key] = getattr(obj, key)
-
+    obj = import_string(obj)
+    d = {key: getattr(obj, key) for key in dir(obj) if key.isupper()}
     return d
 
 
@@ -97,5 +51,14 @@ def create_connexion_app():
     }
     app = connexion.FlaskApp(**app_options)
 
+    # Add the specification file.
     app.add_api(settings['SPECIFICATION_FILE'], resolver=RestyResolver(settings['RESOLVER_MODULE_NAME']))
+
+    # Add an extra route to for redoc.
+    openapi_json_url = "http://0.0.0.0:8000/1.0/openapi.json"
+    add_redoc_route(app, openapi_json_url)
+
+    # Add CORS support.
+    CORS(app.app)
+
     return app
