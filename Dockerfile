@@ -1,4 +1,4 @@
-FROM python:3.6.5-slim-stretch as builder
+FROM python:3.7.1-slim-stretch as builder
 MAINTAINER Rémy Greinhofer <remy.greinhofer@requestyoracks.org>
 
 # Update the package list.
@@ -20,7 +20,7 @@ RUN rm -fr dist \
 
 ###
 # Create the release image.
-FROM python:3.6.5-slim-stretch
+FROM python:3.7.1-slim-stretch
 MAINTAINER Rémy Greinhofer <remy.greinhofer@requestyoracks.org>
 
 # Copy the package and install it.
