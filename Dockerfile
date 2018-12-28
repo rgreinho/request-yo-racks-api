@@ -1,7 +1,7 @@
 FROM python:3.7.1-slim-stretch as builder
 MAINTAINER Rémy Greinhofer <remy.greinhofer@requestyoracks.org>
 
-# Update the package list.
+# Install packages.
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   git \
@@ -26,7 +26,16 @@ MAINTAINER Rémy Greinhofer <remy.greinhofer@requestyoracks.org>
 # Copy the package and install it.
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist /usr/src/app
-RUN pip install --no-cache-dir api-*-py3-none-any.whl
+
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  git \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && pip install -U git+https://github.com/celery/celery.git@master#egg=celery \
+  # The commands above are part of a hack to install Celery from the master branch in order to be able run it with
+  # Python 3.7. Once Celery 4.3 or 5 gets released, they could be safely removed.
+  && pip install --no-cache-dir api-*-py3-none-any.whl
 
 # Copy entry point.
 COPY docker/docker-entrypoint.sh /
