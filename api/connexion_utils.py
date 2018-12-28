@@ -55,7 +55,7 @@ def create_connexion_app():
     app.add_api(settings['SPECIFICATION_FILE'], resolver=RestyResolver(settings['RESOLVER_MODULE_NAME']))
 
     # Add an extra route to for redoc.
-    openapi_json_url = "http://0.0.0.0:8000/1.0/openapi.json"
+    openapi_json_url = f'{settings["BASE_URL"]}/1.0/openapi.json'
     add_redoc_route(app, openapi_json_url)
 
     # Add CORS support.
