@@ -22,7 +22,8 @@ CHART_NAME = $(CHART_REPO)/$(PROJECT_NAME)
 
 # Run commands.
 DOCKER_RUN_CMD = docker run --rm -t -v=$$(pwd):/code $(DOCKER_IMG)
-LOCAL_RUN_CMD = source venv/bin/activate &&
+VENV_BIN = venv/bin
+LOCAL_RUN_CMD = source $(VENV_BIN)/activate &&
 
 # Determine whether running the command in a container or locally.
 ifeq ($(RUN),docker)
@@ -150,6 +151,9 @@ local-api: ## Run connexion locally
 setup: venv build-docker ## Setup the full environment (default)
 
 venv: venv/bin/activate ## Setup local venv
+	echo "[ -f $(VENV_BIN)/postactivate ] && . $(VENV_BIN)/postactivate" >> $(VENV_BIN)/activate
+	echo "export PYTHONBREAKPOINT=bpdb.set_trace" > $(VENV_BIN)/postactivate
+	echo "unset PYTHONBREAKPOINT" > $(VENV_BIN)/predeactivate
 
 venv/bin/activate: requirements.txt
 	test -d venv || python3 -m venv venv || virtualenv --no-setuptools --no-wheel -p python3 venv
